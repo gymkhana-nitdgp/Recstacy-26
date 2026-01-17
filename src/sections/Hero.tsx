@@ -31,20 +31,59 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
   useGSAP(() => {
     const mm = gsap.matchMedia();
 
-    // 1. Mouse Parallax
+    // 1. MOUSE INTERACTION (Magnetic Text + Parallax)
     const handleMouseMove = (e: MouseEvent) => {
-      const { clientX } = e;
-      const xNorm = (clientX / window.innerWidth) * 2 - 1;
+      const { clientX, clientY } = e;
+      const xNorm = (clientX / window.innerWidth) * 2 - 1; 
 
-      gsap.to(".scene-wrapper", { x: 10 * xNorm, duration: 1.5, ease: "power2.out" });
-      gsap.to(rocksDeepRef.current, { x: 5 * xNorm, duration: 2, ease: "power2.out" });
-      gsap.to(rocksBackRef.current, { x: 8 * xNorm, duration: 2, ease: "power2.out" });
-      gsap.to(rocksMidRef.current, { x: 15 * xNorm, duration: 2, ease: "power2.out" });
-      gsap.to(rocksFrontRef.current, { x: 20 * xNorm, duration: 2, ease: "power2.out" });
+      // A. Smooth Background Parallax
+      gsap.to(".scene-wrapper", { x: 10 * xNorm, duration: 2, ease: "power3.out", overwrite: "auto" });
+      gsap.to(rocksDeepRef.current, { x: 5 * xNorm, duration: 2.5, ease: "power3.out", overwrite: "auto" });
+      gsap.to(rocksBackRef.current, { x: 8 * xNorm, duration: 2.5, ease: "power3.out", overwrite: "auto" });
+      gsap.to(rocksMidRef.current, { x: 15 * xNorm, duration: 2.5, ease: "power3.out", overwrite: "auto" });
+      gsap.to(rocksFrontRef.current, { x: 20 * xNorm, duration: 2.5, ease: "power3.out", overwrite: "auto" });
+
+      // B. Magnetic Text Logic
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      
+      const deltaX = clientX - centerX;
+      const deltaY = clientY - centerY;
+      const distance = Math.hypot(deltaX, deltaY);
+      
+      // Activation Radius (400px around center)
+      const TRIGGER_RADIUS = 400; 
+
+      if (distance < TRIGGER_RADIUS) {
+        // Calculate pull strength (1.0 at center -> 0.0 at edge)
+        const intensity = 1 - (distance / TRIGGER_RADIUS);
+
+        gsap.to(textRef.current, {
+          x: deltaX * 0.2 * intensity, // Pull text towards mouse
+          y: deltaY * 0.2 * intensity,
+          rotationY: (deltaX * 0.05) * intensity, // 3D Tilt Left/Right
+          rotationX: -(deltaY * 0.05) * intensity, // 3D Tilt Up/Down
+          duration: 0.8,
+          ease: "power2.out",
+          overwrite: "auto"
+        });
+      } else {
+        // Reset to center smoothly
+        gsap.to(textRef.current, {
+          x: 0,
+          y: 0,
+          rotationY: 0,
+          rotationX: 0,
+          duration: 1.2,
+          ease: "elastic.out(1, 0.5)",
+          overwrite: "auto"
+        });
+      }
     };
+
     window.addEventListener('mousemove', handleMouseMove);
 
-    // 2. SCROLL ANIMATION CONFIG
+    // 2. SCROLL ANIMATION CONFIG (Unchanged)
     mm.add("(min-width: 1024px)", () => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -71,7 +110,6 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
           { y: "-180vh", scale: 1.5, duration: 0.5, ease: "power1.in" }
         ]
       }, 0);
-      // Removed navbar animation to prevent crash
     });
 
     mm.add("(max-width: 1023px)", () => {
@@ -99,7 +137,6 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
           { y: "-160vh", scale: 1.5, duration: 0.5, ease: "power1.in" }
         ]
       }, 0);
-      // Removed navbar animation to prevent crash
     });
 
     return () => {
@@ -128,8 +165,24 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
         <Countdown />
       </div>
 
-      <div className="scene-wrapper relative flex items-center justify-center z-10 -mt-32 md:mt-0">
-        <h1 ref={textRef} className="font-black text-[#FFEBD0] text-[15vw] lg:text-[8vw] tracking-[0.1em] lg:tracking-[0.2em] select-none text-center [text-shadow:0_5px_15px_rgba(0,0,0,1),0_0_30px_rgba(255,69,0,0.9),0_0_60px_rgba(255,100,0,0.6),0_0_90px_rgba(255,50,0,0.4)]" style={{ fontFamily: "'Mosca Laroke', sans-serif" }}>
+      {/* Added perspective to wrapper for realistic 3D Text Tilt */}
+      <div className="scene-wrapper relative flex items-center justify-center z-10 -mt-32 md:mt-0 perspective-[1000px]">
+        
+        {/* TEXT (Original Decoration + Magnetic Effect) */}
+        <h1 
+            ref={textRef} 
+            className="font-black text-[#FFEBD0] text-[15vw] lg:text-[8vw] tracking-[0.1em] lg:tracking-[0.2em] select-none text-center 
+            z-10 mix-blend-difference pl-4
+            
+            /* DECORATION: Warm Glow & Gold Stroke */
+            [text-shadow:0_5px_15px_rgba(0,0,0,1),0_0_30px_rgba(255,69,0,0.9),0_0_60px_rgba(255,100,0,0.6),0_0_90px_rgba(255,50,0,0.4)]
+            [-webkit-text-stroke:1px_rgba(255,235,208,0.3)] md:[-webkit-text-stroke:1.5px_rgba(255,235,208,0.3)]" 
+            
+            style={{ 
+                fontFamily: "'Mosca Laroke', sans-serif",
+                transformStyle: "preserve-3d" // Needed for magnetic tilt
+            }}
+        >
           RECSTACY
         </h1>
       </div>

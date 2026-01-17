@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import Hero from '../sections/Hero';
+import Sponsors from '../sections/Sponsors';
 import InitialLoader from '../components/InitialLoader';
 import { useTransition } from '../context/TransitionContext';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HomePage: React.FC = () => {
   const { isTransitioning } = useTransition();
   const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
 
+  // Logic to control loader type
   const [loaderType, setLoaderType] = useState<'initial' | 'none'>(
      hasSeenIntro ? 'none' : 'initial'
   );
 
-  // This state now ONLY controls when the Hero animations (rocks/lanyards) start.
-  // It does NOT hide the page anymore.
-  const [animationsStarted, setAnimationsStarted] = useState(!isTransitioning);
+  const [animationsStarted, setAnimationsStarted] = useState(false);
 
+  // Simple check: When transition ends, start animations
   useEffect(() => {
-    if (isTransitioning) {
-        setAnimationsStarted(false);
+    if (!isTransitioning) {
+        setAnimationsStarted(true);
+        // Small refresh to ensure ScrollTrigger catches up after loader vanishes
+        setTimeout(() => ScrollTrigger.refresh(), 100);
     } else {
-        const t = setTimeout(() => setAnimationsStarted(true), 200);
-        return () => clearTimeout(t);
+        setAnimationsStarted(false);
     }
   }, [isTransitioning]);
 
@@ -28,28 +35,25 @@ const HomePage: React.FC = () => {
     sessionStorage.setItem('hasSeenIntro', 'true');
     setLoaderType('none');
     setAnimationsStarted(true);
+    setTimeout(() => ScrollTrigger.refresh(), 100);
   };
 
   return (
     <>
-      {/* Initial Video Loader */}
+      {/* Initial Video Loader (First Visit Only) */}
       {!isTransitioning && loaderType === 'initial' && (
         <InitialLoader onComplete={handleInitialComplete} />
       )}
 
-      {/* --- FIX: Removed 'opacity-0' logic based on transition ---
-         The main content is now always visible (opacity-100) behind the loader.
-         This prevents the black screen flash when the loader fades out.
-      */}
-      <main className="transition-opacity duration-1000 opacity-100">
-        
-        {/* We still pass the trigger so animations don't start early */}
-        <Hero startAnimation={animationsStarted && loaderType === 'none'} />
-        
-        <div className="h-screen w-full bg-black flex items-center justify-center relative z-40">
-          <h2 className="text-white font-bold text-2xl">Content Below Fold</h2>
-        </div>
+      {/* Main Content */}
+      <main className="bg-black">
+        {/* Pass props to start animation only when safe */}
+        <Hero startAnimation={animationsStarted && !isTransitioning} />
+        <Sponsors />
       </main>
+
+      {/* Footer Spacer */}
+      <div className="w-full h-screen bg-black relative z-30" />
     </>
   );
 };
