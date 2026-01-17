@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ASSETS } from '../assets/constants';
 
 // UI Components
 import AudioControl from '../components/AudioControl';
@@ -10,13 +11,11 @@ import Countdown from '../components/Countdown';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- ASSETS (Restored to local constants) ---
-const ASHURA_IMG = "/ashura.png";
-const ROCKS_GROUP_IMG = "/rocks-group.png";
-const NEBULA_VIDEO = "/nebula.mp4";
-const BACK_VIDEO = "/back.mp4";
+interface HeroProps {
+  startAnimation: boolean;
+}
 
-const Hero: React.FC = () => {
+const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const ashuraRef = useRef<HTMLImageElement>(null);
@@ -46,9 +45,7 @@ const Hero: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
 
     // 2. SCROLL ANIMATION CONFIG
-
-    // --- DESKTOP (min-width: 768px) ---
-    mm.add("(min-width: 768px)", () => {
+    mm.add("(min-width: 1024px)", () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -58,35 +55,26 @@ const Hero: React.FC = () => {
           pin: true,
         }
       });
-      // UI Exit
       tl.to(".ui-layer", { y: -200, opacity: 0, duration: 0.3 }, 0);
       tl.to(".scene-wrapper", { y: -500, scale: 0.8, duration: 0.5 }, 0);
-
-      // --- ANIMATE: Move Video Group Up & Fade Overlay In ---
       tl.to(videoGroupRef.current, { y: -500, duration: 0.5, ease: "power1.inOut" }, 0);
       tl.to(overlayRef.current, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
-
-      // Rocks Move Up
       tl.to(rocksDeepRef.current, { y: "-130vh", ease: "none", duration: 1 }, 0);
       tl.to(rocksBackRef.current, { y: "-150vh", ease: "none", duration: 1 }, 0);
       tl.to(rocksMidRef.current, { y: "-180vh", ease: "none", duration: 1 }, 0);
       tl.to(rocksFrontRef.current, { y: "-210vh", ease: "none", duration: 1 }, 0);
-
-      // Darken Rocks
       tl.to(".rock-layer", { filter: "brightness(0)", duration: 0.4, ease: "power2.in" }, 0.2);
-
-      // Ashura: Corner -> Center -> Up
+      
       tl.to(ashuraRef.current, {
         keyframes: [
           { x: "-50vw", y: "-50vh", xPercent: 50, yPercent: 50, scale: 1.5, duration: 0.5, ease: "power2.out" },
           { y: "-180vh", scale: 1.5, duration: 0.5, ease: "power1.in" }
         ]
       }, 0);
-      tl.to("#navbar-container", { y: -100, opacity: 0, duration: 0.3 }, 0.5);
+      // Removed navbar animation to prevent crash
     });
 
-    // --- MOBILE (max-width: 767px) ---
-    mm.add("(max-width: 767px)", () => {
+    mm.add("(max-width: 1023px)", () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -96,47 +84,22 @@ const Hero: React.FC = () => {
           pin: true,
         }
       });
-
-      // UI Exit
       tl.to(".ui-layer", { y: -100, opacity: 0, duration: 0.3 }, 0);
       tl.to(".scene-wrapper", { y: -400, scale: 0.9, duration: 0.5 }, 0);
-
-      // --- ANIMATE: Move Video Group Up & Fade Overlay In (Mobile) ---
       tl.to(videoGroupRef.current, { y: -400, duration: 0.5, ease: "power1.inOut" }, 0);
       tl.to(overlayRef.current, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 0);
-
-
-      // Rocks Move Up
       tl.to(rocksDeepRef.current, { y: "-100vh", ease: "none", duration: 1 }, 0);
       tl.to(rocksBackRef.current, { y: "-110vh", ease: "none", duration: 1 }, 0);
       tl.to(rocksMidRef.current, { y: "-120vh", ease: "none", duration: 1 }, 0);
       tl.to(rocksFrontRef.current, { y: "-130vh", ease: "none", duration: 1 }, 0);
-
-      // Darken Rocks
       tl.to(".rock-layer", { filter: "brightness(0)", duration: 0.4, ease: "power2.in" }, 0.2);
-
-      // Ashura: Corner -> Center (Scale 1.5) -> Up
       tl.to(ashuraRef.current, {
         keyframes: [
-          {
-            x: "-50vw",
-            y: "-45vh",
-            xPercent: 50,
-            yPercent: 50,
-            scale: 1.5,
-            duration: 0.5,
-            ease: "power2.out"
-          },
-          {
-            y: "-160vh",
-            scale: 1.5,
-            duration: 0.5,
-            ease: "power1.in"
-          }
+          { x: "-50vw", y: "-45vh", xPercent: 50, yPercent: 50, scale: 1.5, duration: 0.5, ease: "power2.out" },
+          { y: "-160vh", scale: 1.5, duration: 0.5, ease: "power1.in" }
         ]
       }, 0);
-
-      tl.to("#navbar-container", { y: -100, opacity: 0, duration: 0.3 }, 0.5);
+      // Removed navbar animation to prevent crash
     });
 
     return () => {
@@ -145,97 +108,66 @@ const Hero: React.FC = () => {
     };
   }, { scope: containerRef });
 
-  // Orange-Red Inferno Glow
   const glowClass = "filter drop-shadow-[0_5px_15px_rgba(0,0,0,1)] drop-shadow-[0_0_20px_rgba(255,69,0,0.8)] drop-shadow-[0_0_40px_rgba(255,100,0,0.5)]";
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-black overflow-hidden flex flex-col items-center justify-center pt-0 md:justify-start md:pt-[15vh]">
+    <div ref={containerRef} className="relative w-full h-screen bg-black overflow-hidden flex flex-col items-center justify-center pt-0 lg:justify-start lg:pt-[15vh]">
 
       <AudioControl />
 
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0 opacity-50 md:opacity-70 pointer-events-none"
-        src={NEBULA_VIDEO}
-      />
+      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-50 md:opacity-70 pointer-events-none" src={ASSETS.NEBULA_VIDEO} />
 
-      <div
-        ref={videoGroupRef}
-        className="absolute inset-0 w-full h-full z-[5] pointer-events-none"
-      >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          src={BACK_VIDEO}
-          className="w-full h-full object-cover brightness-[0.6] md:brightness-100"
-        />
-        <div
-          ref={overlayRef}
-          className="absolute inset-0 bg-black opacity-0"
-        />
+      <div ref={videoGroupRef} className="absolute inset-0 w-full h-full z-[5] pointer-events-none">
+        <video autoPlay loop muted playsInline src={ASSETS.BACK_VIDEO} className="w-full h-full object-cover brightness-[0.6] md:brightness-100" />
+        <div ref={overlayRef} className="absolute inset-0 bg-black opacity-0" />
       </div>
 
-
       <div className="ui-layer absolute inset-0 w-full h-full z-[60] pointer-events-none">
-        <DesktopLanyards />
+        <DesktopLanyards play={startAnimation} />
         <MobileSocialDock />
         <Countdown />
       </div>
 
       <div className="scene-wrapper relative flex items-center justify-center z-10 -mt-32 md:mt-0">
-        <h1 ref={textRef} className="font-black text-[#FFEBD0] text-[15vw] md:text-[8vw] tracking-[0.1em] md:tracking-[0.2em] select-none text-center [text-shadow:0_5px_15px_rgba(0,0,0,1),0_0_30px_rgba(255,69,0,0.9),0_0_60px_rgba(255,100,0,0.6),0_0_90px_rgba(255,50,0,0.4)]" style={{ fontFamily: "'Mosca Laroke', sans-serif" }}>
+        <h1 ref={textRef} className="font-black text-[#FFEBD0] text-[15vw] lg:text-[8vw] tracking-[0.1em] lg:tracking-[0.2em] select-none text-center [text-shadow:0_5px_15px_rgba(0,0,0,1),0_0_30px_rgba(255,69,0,0.9),0_0_60px_rgba(255,100,0,0.6),0_0_90px_rgba(255,50,0,0.4)]" style={{ fontFamily: "'Mosca Laroke', sans-serif" }}>
           RECSTACY
         </h1>
       </div>
 
-      {/* ROCK LAYERS (z-10 to z-40) */}
-      <div
-        ref={rocksDeepRef}
-        className={`rock-layer absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-[150%] md:w-[150%] z-10 pointer-events-none flex justify-center md:justify-start blur-[2px] top-[80vh] md:top-[75vh] ${glowClass}`}
-        style={{ filter: 'brightness(0.3)' }}
-      >
-        <img src={ROCKS_GROUP_IMG} className="w-[60%] md:w-[25%] object-contain scale-90 md:scale-75" alt="" />
-        <img src={ROCKS_GROUP_IMG} className="hidden md:block w-[25%] object-contain scale-75" alt="" />
+      {/* ROCKS */}
+      <div ref={rocksDeepRef} className={`rock-layer absolute left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 w-[150%] md:w-[200%] lg:w-[150%] z-10 pointer-events-none flex justify-center lg:justify-start blur-[2px] top-[80vh] lg:top-[75vh] ${glowClass}`} style={{ filter: 'brightness(0.3)' }}>
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="w-[60%] md:w-[40%] lg:w-[25%] object-contain scale-90 lg:scale-75" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden lg:block w-[25%] object-contain scale-75" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute left-[10%] w-[35%] opacity-80 -rotate-12" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute right-[10%] w-[35%] opacity-80 rotate-12" alt="" />
       </div>
 
-      <div
-        ref={rocksBackRef}
-        className={`rock-layer absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-[160%] md:w-[150%] z-20 pointer-events-none flex justify-center md:justify-start blur-[1px] top-[85vh] md:top-[95vh] ${glowClass}`}
-        style={{ filter: 'brightness(0.5)' }}
-      >
-        <img src={ROCKS_GROUP_IMG} className="w-[70%] md:w-[30%] object-contain rotate-12" alt="" />
-        <img src={ROCKS_GROUP_IMG} className="hidden md:block w-[30%] object-contain -rotate-12" alt="" />
+      <div ref={rocksBackRef} className={`rock-layer absolute left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 w-[160%] md:w-[220%] lg:w-[150%] z-20 pointer-events-none flex justify-center lg:justify-start blur-[1px] top-[85vh] lg:top-[95vh] ${glowClass}`} style={{ filter: 'brightness(0.5)' }}>
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="w-[70%] md:w-[45%] lg:w-[30%] object-contain rotate-12" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden lg:block w-[30%] object-contain -rotate-12" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute left-[5%] w-[40%] -rotate-6 scale-x-[-1]" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute right-[5%] w-[40%] rotate-6" alt="" />
       </div>
 
-      <div
-        ref={rocksMidRef}
-        className={`rock-layer absolute left-1/2 -translate-x-1/2 md:-left-20 md:translate-x-0 w-[180%] md:w-[200%] z-30 pointer-events-none flex justify-center md:justify-start top-[110vh] md:top-[120vh] ${glowClass}`}
-        style={{ filter: 'brightness(0.8)' }}
-      >
-        <img src={ROCKS_GROUP_IMG} className="w-[80%] md:w-[35%] object-contain" alt="" />
-        <img src={ROCKS_GROUP_IMG} className="hidden md:block w-[35%] object-contain scale-x-[-1]" alt="" />
+      <div ref={rocksMidRef} className={`rock-layer absolute left-1/2 -translate-x-1/2 lg:-left-20 lg:translate-x-0 w-[180%] md:w-[240%] lg:w-[200%] z-30 pointer-events-none flex justify-center lg:justify-start top-[110vh] lg:top-[120vh] ${glowClass}`} style={{ filter: 'brightness(0.8)' }}>
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="w-[80%] md:w-[50%] lg:w-[35%] object-contain" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden lg:block w-[35%] object-contain scale-x-[-1]" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute left-[0] w-[45%] rotate-3" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute right-[0] w-[45%] -rotate-3 scale-x-[-1]" alt="" />
       </div>
 
-      <div
-        ref={rocksFrontRef}
-        className={`rock-layer absolute left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 w-[200%] md:w-[200%] z-40 pointer-events-none flex justify-center md:justify-start top-[120vh] md:top-[135vh] ${glowClass}`}
-        style={{ filter: 'brightness(1)' }}
-      >
-        <img src={ROCKS_GROUP_IMG} className="w-[100%] md:w-[40%] object-contain rotate-6 blur-[1px]" alt="" />
-        <img src={ROCKS_GROUP_IMG} className="hidden md:block w-[40%] object-contain scale-105 -rotate-6 blur-[0.5px]" alt="" />
+      <div ref={rocksFrontRef} className={`rock-layer absolute left-1/2 -translate-x-1/2 lg:-left-10 lg:translate-x-0 w-[200%] md:w-[260%] lg:w-[200%] z-40 pointer-events-none flex justify-center lg:justify-start top-[120vh] lg:top-[135vh] ${glowClass}`} style={{ filter: 'brightness(1)' }}>
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="w-[100%] md:w-[60%] lg:w-[40%] object-contain rotate-6 blur-[1px]" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden lg:block w-[40%] object-contain scale-105 -rotate-6 blur-[0.5px]" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute -left-10 w-[55%] -rotate-12 blur-[0.5px]" alt="" />
+        <img src={ASSETS.ROCKS_GROUP_IMG} className="hidden md:block lg:hidden absolute -right-10 w-[55%] rotate-12 blur-[0.5px] scale-x-[-1]" alt="" />
       </div>
 
-      {/* ASHURA IMAGE (z-50) */}
       <img
         ref={ashuraRef}
-        src={ASHURA_IMG}
+        src={ASSETS.ASHURA_IMG}
         alt="Ashura Deity"
-        className={`absolute bottom-0 right-0 z-[50] pointer-events-none object-contain w-[45vw] md:w-[20vw] ${glowClass}`}
+        className={`absolute bottom-0 right-0 z-[50] pointer-events-none object-contain w-[45vw] lg:w-[20vw] ${glowClass}`}
       />
     </div>
   );

@@ -14,6 +14,32 @@
   src: url('./fonts/Man of Space.ttf') format('truetype');
 }
 
+/* --- LAYOUT SHIFT FIX --- */
+/* This reserves space for the scrollbar permanently so the center alignment 
+   doesn't jump when the loader (no scroll) switches to homepage (scroll). */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* --- CUSTOM DARK SCROLLBAR --- */
+/* Makes the scrollbar blend in with your black background */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333; 
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555; 
+}
+
 /* 3. Neon Glow (For Main Title Only) */
 @layer utilities {
   .text-neon {
@@ -23,4 +49,14 @@
       0 0 20px rgba(193, 53, 132, 0.4),
       0 0 30px rgba(24, 119, 242, 0.4);
   }
+}
+
+/* Global Body Styles */
+body {
+  background-color: black;
+  color: white;
+  margin: 0;
+  /* Ensuring smooth font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

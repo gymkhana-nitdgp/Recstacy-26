@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ASSETS } from '../assets/constants';
 
-const AudioControl: React.FC = () => {
+const AudioControl = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -9,6 +9,22 @@ const AudioControl: React.FC = () => {
     audioRef.current = new Audio(ASSETS.BG_MUSIC);
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5;
+
+    // --- ATTEMPT AUTO-PLAY ON MOUNT ---
+    const playPromise = audioRef.current.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          // Auto-play started!
+          setIsPlaying(true);
+        })
+        .catch((error) => {
+          // Auto-play was prevented by the browser (user interaction required)
+          console.log("Audio autoplay blocked by browser policy:", error);
+          setIsPlaying(false);
+        });
+    }
 
     return () => {
       if (audioRef.current) {
@@ -20,10 +36,11 @@ const AudioControl: React.FC = () => {
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play().catch((e) => console.log("Audio play failed:", e));
+      audioRef.current.play().catch(e => console.log("Audio play failed:", e));
     }
     setIsPlaying(!isPlaying);
   };
