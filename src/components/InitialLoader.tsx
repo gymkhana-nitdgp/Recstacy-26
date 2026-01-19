@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ASSETS } from '../assets/constants';
+import { ASSETS } from '../../public/assets/constants';
 
 interface Props {
   onComplete: () => void;

@@ -1,34 +1,40 @@
-import React, { createContext, useContext, useState, useRef, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+// Defines the loader states
+type LoaderType = 'none' | 'forward' | 'routing';
 
 interface TransitionContextType {
-  triggerTransition: (path: string) => void;
-  isTransitioning: boolean;
-  setIsTransitioning: (v: boolean) => void;
-  targetPath: React.MutableRefObject<string>;
+  currentLoader: LoaderType;
+  targetPath: string; 
+  startTransition: (type: LoaderType, path?: string) => void;
+  endTransition: () => void;
 }
 
-// Default values to prevent crashing if provider is missing
-const TransitionContext = createContext<TransitionContextType>({
-  triggerTransition: () => {},
-  isTransitioning: false,
-  setIsTransitioning: () => {},
-  targetPath: { current: '/' } as any,
-});
-
-export const useTransition = () => useContext(TransitionContext);
+const TransitionContext = createContext<TransitionContextType | undefined>(undefined);
 
 export const TransitionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const targetPath = useRef('/');
+  const [currentLoader, setCurrentLoader] = useState<LoaderType>('none');
+  const [targetPath, setTargetPath] = useState<string>('/');
 
-  const triggerTransition = (path: string) => {
-    targetPath.current = path; 
-    setIsTransitioning(true); 
+  const startTransition = (type: LoaderType, path: string = '/') => {
+    setTargetPath(path);
+    setCurrentLoader(type);
+  };
+
+  const endTransition = () => {
+    setCurrentLoader('none');
   };
 
   return (
-    <TransitionContext.Provider value={{ triggerTransition, isTransitioning, setIsTransitioning, targetPath }}>
+    <TransitionContext.Provider value={{ currentLoader, targetPath, startTransition, endTransition }}>
       {children}
     </TransitionContext.Provider>
   );
+};
+
+// We renamed this hook to avoid conflicts with React
+export const usePageTransition = () => {
+  const context = useContext(TransitionContext);
+  if (!context) throw new Error('usePageTransition must be used within a TransitionProvider');
+  return context;
 };

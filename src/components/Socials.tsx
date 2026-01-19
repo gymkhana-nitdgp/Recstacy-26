@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ASSETS } from '../assets/constants';
+import { ASSETS } from '../../public/assets/constants';
 
 interface SocialProps {
   play: boolean;

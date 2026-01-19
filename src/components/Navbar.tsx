@@ -1,24 +1,27 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ASSETS } from '../assets/constants';
-import { useTransition } from '../context/TransitionContext'; // <--- Import Context
+import { ASSETS } from '../../public/assets/constants';
+import { usePageTransition } from '../context/TransitionContext'; // <--- UPDATED HOOK NAME
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const tl = useRef<gsap.core.Timeline | null>(null);
 
-  // Get the transition trigger from our custom context
-  const { triggerTransition } = useTransition();
+  // Use the updated context hook
+  const { startTransition, endTransition } = usePageTransition();
 
+  // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
+  // --- YOUR ORIGINAL GSAP ANIMATION ---
   useGSAP(() => {
     tl.current = gsap.timeline({ paused: true })
       .to(".hamburger-icon", {
@@ -50,27 +53,57 @@ const Navbar: React.FC = () => {
     }
   }, [isOpen]);
 
-  // --- NEW: Handle Navigation Click ---
-  // Instead of letting <Link> handle it, we intercept the click,
-  // prevent default behavior, and trigger our Spline Gateway transition.
-  const handleNavClick = (e: React.MouseEvent, path: string) => {
+  // --- UPDATED NAVIGATION LOGIC ---
+  const handleNavClick = (e: React.MouseEvent, path: string, isScrollLink: boolean = false) => {
     e.preventDefault();
     
-    // 1. Close mobile menu if it's open
+    // 1. Close mobile menu
     if (isOpen) setIsOpen(false);
 
-    // 2. If we are already on this page, do nothing (optional optimization)
-    if (location.pathname === path) return;
+    // 2. Prevent reloading current page (unless it's a scroll link or Home refresh)
+    if (location.pathname === path && !isScrollLink && path !== '/') return;
 
-    // 3. Trigger the sliding door animation + navigation
-    triggerTransition(path);
+    // --- CASE 1: HOME NAVIGATION (RoutingLoader) ---
+    if (path === '/') {
+        // CRITICAL CHANGE: We pass '/' as the second argument.
+        // We DO NOT manually setTimeout/navigate here. 
+        // The RoutingLoader component receives this path and handles the navigation/timing.
+        startTransition('routing', '/');
+    } 
+    
+    // --- CASE 2: FORWARD NAVIGATION (Other Pages) ---
+    else {
+        startTransition('forward', path);
+
+        // For forward navigation (simple CSS loader), we keep your manual timing
+        setTimeout(() => {
+            if (isScrollLink) {
+                // Handle Sponsors Scroll Logic
+                if (location.pathname !== '/') {
+                    navigate('/'); 
+                    setTimeout(() => {
+                        const element = document.getElementById(path.replace('/#', ''));
+                        element?.scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                } else {
+                    const element = document.getElementById(path.replace('/#', ''));
+                    element?.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                navigate(path);
+            }
+            
+            // Lift curtain manually for forward loader
+            setTimeout(endTransition, 500);
+        }, 2000); // 2s wait for Forward animation
+    }
   };
 
   const navLinks = [
-    { name: "HOME", path: "/" },
-    { name: "ABOUT US", path: "/about" },
-    { name: "EVENTS", path: "/events" },
-    { name: "CONTACT", path: "/contact" }
+    { name: "HOME", path: "/", isScroll: false },
+    { name: "EVENTS", path: "/events", isScroll: false },
+    { name: "SPONSORS", path: "/sponsors", isScroll: false },
+    { name: "CONTACT", path: "/contact", isScroll: false },
   ];
 
   return (
@@ -82,7 +115,7 @@ const Navbar: React.FC = () => {
           <a
             key={link.name}
             href={link.path}
-            onClick={(e) => handleNavClick(e, link.path)}
+            onClick={(e) => handleNavClick(e, link.path, link.isScroll)}
             className="text-[#FFEBD0] text-sm tracking-widest opacity-90 hover:opacity-100 hover:text-orange-500 transition-all duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] cursor-pointer"
             style={{ fontFamily: "'Man of Space', sans-serif" }}
           >
@@ -128,7 +161,7 @@ const Navbar: React.FC = () => {
             <a
               key={link.name}
               href={link.path}
-              onClick={(e) => handleNavClick(e, link.path)}
+              onClick={(e) => handleNavClick(e, link.path, link.isScroll)}
               className="mobile-link text-3xl font-black text-[#FFEBD0] tracking-[0.2em] hover:text-orange-500 transition-colors filter drop-shadow-[0_0_10px_rgba(0,0,0,1)] drop-shadow-[0_0_15px_rgba(255,69,0,0.5)] cursor-pointer"
               style={{ fontFamily: "'Man of Space', sans-serif" }}
             >

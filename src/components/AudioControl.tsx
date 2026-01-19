@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ASSETS } from '../assets/constants';
+import { ASSETS } from '../../public/assets/constants';
 
 const AudioControl = () => {
   const [isPlaying, setIsPlaying] = useState(false);

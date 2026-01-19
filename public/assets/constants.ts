@@ -8,4 +8,5 @@ export const ASSETS = {
     BACK_VIDEO: "/back.mp4",
     BG_MUSIC: "/bgmusic.mp3",
     LOAD_VIDEO: "/load.mp4", 
+    bgImage: "/black.png",
   };
