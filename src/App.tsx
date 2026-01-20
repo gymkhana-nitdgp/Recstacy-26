@@ -1,5 +1,7 @@
-import React, { useLayoutEffect, useRef } from 'react'; // <--- IMPORT useLayoutEffect
-import { BrowserRouter as Router, Route, Routes, useLocation, useNavigationType } from 'react-router-dom';
+// App.tsx
+import React, { useLayoutEffect, useRef } from 'react';
+// 1. Import useNavigate
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import ContactPage from './pages/ContactPage';
@@ -12,11 +14,12 @@ const EventsPage = () => <div className="h-screen bg-black flex items-center jus
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const { currentLoader, startTransition } = usePageTransition();
+  // 2. Initialize navigate
+  const navigate = useNavigate(); 
+  // 3. Extract targetPath and endTransition
+  const { currentLoader, startTransition, targetPath, endTransition } = usePageTransition(); 
   const prevPath = useRef<string | null>(null);
 
-  // --- FIX: USE LAYOUT EFFECT ---
-  // This runs synchronously before the screen paints, preventing the "Flash"
   useLayoutEffect(() => {
       // BACK BUTTON LOGIC
       if (location.pathname === '/' && prevPath.current && prevPath.current !== '/') {
@@ -33,8 +36,14 @@ const AppContent: React.FC = () => {
 
       <RoutingLoader />
 
+      {/* 4. Connect the ForwardLoader props */}
       {currentLoader === 'forward' && (
-         <ForwardLoader onComplete={() => {}} />
+         <ForwardLoader 
+            // Switches the page exactly when curtains are closed
+            onMidway={() => navigate(targetPath)} 
+            // Cleans up the loader state when animation finishes
+            onComplete={() => endTransition()} 
+         />
       )}
       
       <Routes location={location} key={location.pathname}>

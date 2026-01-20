@@ -9,7 +9,7 @@ const Countdown: React.FC = () => {
   const fmt = (n: number) => Math.floor(n).toString().padStart(2, '0');
 
   useGSAP(() => {
-    const targetDate = new Date("2026-02-01T00:00:00").getTime();
+    const targetDate = new Date("2026-01-30T00:00:00").getTime();
     const getRemaining = () => {
       const now = new Date().getTime();
       const diff = targetDate - now;
@@ -30,18 +30,21 @@ const Countdown: React.FC = () => {
   const labels = ["DAYS", "HOURS", "MINS"];
   const refs = [daysRef, hoursRef, minsRef];
 
-  const numberStyles = "text-4xl md:text-6xl font-black leading-none text-[#FFEBD0] w-[1.5em] text-center [text-shadow:0_2px_10px_rgba(0,0,0,0.9),0_0_20px_rgba(255,69,0,0.3)]";
-  const labelStyles = "text-[10px] md:text-xs tracking-widest text-[#FFEBD0]/80 mt-2 [text-shadow:0_1px_5px_rgba(0,0,0,0.9)]";
-  const separatorStyles = "text-3xl md:text-5xl text-[#FFEBD0]/80 -mt-1 md:-mt-2 [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]";
+  const numberStyles = "text-6xl md:text-8xl font-black leading-none text-[#FFEBD0] w-[1.1em] text-center [text-shadow:0_4px_15px_rgba(0,0,0,0.9),0_0_25px_rgba(255,69,0,0.4)]";
+  
+  // CHANGED: Increased from text-sm -> text-xl (mobile) and text-xl -> text-3xl (desktop)
+  const labelStyles = "text-xl md:text-3xl tracking-widest text-[#FFEBD0]/80 mt-2 [text-shadow:0_1px_5px_rgba(0,0,0,0.9)]";
+  
+  const separatorStyles = "text-4xl md:text-7xl text-[#FFEBD0]/80 mt-1 md:mt-0 mx-2 md:mx-4 [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]";
 
   return (
     <div
       className={`
-          absolute z-40 select-none pointer-events-none flex gap-4 md:gap-6 items-start
+          absolute z-40 select-none pointer-events-none flex items-start
           top-[48%] left-1/2 -translate-x-1/2
           md:top-auto md:bottom-12 md:left-12 md:right-auto md:translate-x-0
         `}
-      style={{ fontFamily: "'Man of Space', sans-serif" }}
+      style={{ fontFamily: "'Riot block', sans-serif" }}
     >
       {labels.map((label, idx) => (
         <React.Fragment key={idx}>

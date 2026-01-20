@@ -1,78 +1,75 @@
-import React, { useRef, Suspense, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { Environment, Lightformer } from '@react-three/drei';
-import { Physics as RapierPhysics } from '@react-three/rapier';
-import SafeLanyard from './SafeLanyard';
+import React, { useRef, Suspense, useState, useEffect } from 'react';
+import { motion, useScroll, useSpring, useTransform, MotionValue } from 'framer-motion';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Environment, Lightformer, useTexture } from '@react-three/drei';
+import HangingCard from './HangingCard';
 import { CurtainSide } from './CurtainSide';
+import * as THREE from 'three';
 
-// Asset Imports
-const p1 = "/assets/people/person1.png";
-const p2 = "/assets/people/person2.png";
-const p3 = "/assets/people/person3.png";
-const p4 = "/assets/people/person4.png";
-const p5 = "/assets/people/person5.png";
-const p6 = "/assets/people/person6.png";
-const p7 = p1; 
-const p8 = p2;
+// Define asset paths
+const P1 = "/assets/people/person1.png";
+const P2 = "/assets/people/person2.png";
+const P3 = "/assets/people/person3.png";
+const P4 = "/assets/people/person4.png";
+const P5 = "/assets/people/person5.png";
+const P6 = "/assets/people/person6.png";
+const P7 = "/assets/people/person7.png";
+const P8 = "/assets/people/person8.png";
+
+const ALL_TEXTURES = [P1, P2, P3, P4, P5, P6, P7, P8];
 
 const teamMembers = [
-  { id: 1, name: "Alice", role: "Dev", email: "alice@recstacy.com", img: p1 },
-  { id: 2, name: "Bob", role: "Design", email: "bob@recstacy.com", img: p2 },
-  { id: 3, name: "Charlie", role: "Manager", email: "charlie@recstacy.com", img: p3 },
-  { id: 4, name: "David", role: "Sales", email: "david@recstacy.com", img: p4 },
-  { id: 5, name: "Eve", role: "Marketing", email: "eve@recstacy.com", img: p5 },
-  { id: 6, name: "Frank", role: "Support", email: "frank@recstacy.com", img: p6 },
-  { id: 7, name: "Grace", role: "HR", email: "grace@recstacy.com", img: p7 },
-  { id: 8, name: "Hank", role: "Ops", email: "hank@recstacy.com", img: p8 },
+  { id: 1, name: "Debangshu", role: "Coordinator 4th year", instaId: "debangshu_here_", img: P1 },
+  { id: 2, name: "Bikarna", role: "Coordinator 4th year", instaId: "bikarna_21", img: P2 },
+  { id: 3, name: "Shreyan", role: "Coordinator 4th year", instaId: "shreyan_roy_", img: P3 },
+  { id: 4, name: "Rishikesh", role: "Coordinator 4th year", instaId: "", img: P4 },
+  { id: 5, name: "Soham", role: "Coordinator 3rd year", instaId: "sohamchatrg", img: P5 },
+  { id: 6, name: "Abhra", role: "Coordinator 3rd year", instaId: "abhra_00", img: P6 },
+  { id: 7, name: "Ritam", role: "Coordinator 3rd year", instaId: "ritam_koley_10", img: P7 },
+  { id: 8, name: "Zafar", role: "Coordinator 3rd year", instaId: "zaf_ar029", img: P8 },
 ];
 
 interface TheaterStageProps {
   forceClosed?: boolean;
 }
 
-// REMOVED 'scrollProgress' prop entirely
-const LanyardGroup = ({ forceClosed }: { forceClosed?: boolean }) => {
-    const [isMobile, setIsMobile] = useState(false);
+// 1. PRELOAD TEXTURES (Crucial for smooth entry)
+useTexture.preload(ALL_TEXTURES);
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+const getProgress = (raw: number, forceClosed: boolean) => {
+    if (forceClosed) return 1;
+    let p = (raw - 0.2) / (0.9 - 0.2); 
+    return Math.max(0, Math.min(1, p));
+};
 
-    const getPosition = (index: number, isMob: boolean): [number, number, number] => {
-        if (isMob) {
-            const col = index % 2; 
-            const row = Math.floor(index / 2); 
-            const x = col === 0 ? -1.3 : 1.3;
-            const y = 2.8 - (row * 1.9);
-            return [x, y, 0];
-        } else {
-            const col = index % 4; 
-            const row = Math.floor(index / 4); 
-            const x = -3.6 + (col * 2.4);
-            const y = row === 0 ? 1.8 : -1.0;
-            return [x, y, 0];
+const LeftCurtainGroup = ({ children, smoothProgress, forceClosed }: { children: React.ReactNode, smoothProgress: MotionValue<number>, forceClosed: boolean }) => {
+    const group = useRef<THREE.Group>(null);
+    const { viewport } = useThree();
+    useFrame(() => {
+        if(group.current) {
+            const raw = smoothProgress.get(); 
+            const progress = getProgress(raw, forceClosed);
+            const startX = -viewport.width / 1.5;
+            const endX = 0;
+            group.current.position.x = THREE.MathUtils.lerp(startX, endX, progress);
         }
-    }
+    })
+    return <group ref={group}>{children}</group>
+}
 
-    return (
-       <group>
-          {teamMembers.map((member, i) => (
-             <SafeLanyard 
-                key={member.id}
-                // STATIC POSITIONS ONLY - No fly up math here
-                position={getPosition(i, isMobile)}
-                name={member.name}
-                role={member.role}
-                email={member.email}
-                imageUrl={member.img}
-             />
-          ))}
-       </group>
-    )
+const RightCurtainGroup = ({ children, smoothProgress, forceClosed }: { children: React.ReactNode, smoothProgress: MotionValue<number>, forceClosed: boolean }) => {
+    const group = useRef<THREE.Group>(null);
+    const { viewport } = useThree();
+    useFrame(() => {
+        if(group.current) {
+            const raw = smoothProgress.get();
+            const progress = getProgress(raw, forceClosed);
+            const startX = viewport.width / 1.5;
+            const endX = 0;
+            group.current.position.x = THREE.MathUtils.lerp(startX, endX, progress);
+        }
+    })
+    return <group ref={group}>{children}</group>
 }
 
 export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false }) => {
@@ -80,81 +77,121 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end end"]
+    offset: ["start start", "end end"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 20 });
-  
-  // 1. Curtains: Close from 0% to 80% scroll
-  const leftX = forceClosed ? "0%" : useTransform(smoothProgress, [0, 0.8], ["-30%", "0%"]);
-  const rightX = forceClosed ? "0%" : useTransform(smoothProgress, [0, 0.8], ["30%", "0%"]);
-  
-  // 2. Title: Fades in early
-  const titleOpacity = forceClosed ? 1 : useTransform(smoothProgress, [0.1, 0.6], [0, 1]);
-  
-  // 3. CARDS: Fade in STRICTLY AFTER curtains close (0.8 to 1.0)
-  // This ensures they appear slowly only when the background is fully red/closed.
-  const cardsOpacity = forceClosed ? 1 : useTransform(smoothProgress, [0.8, 1], [0, 1]);
-  
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
+  const leftX = forceClosed ? "0%" : useTransform(smoothProgress, [0.2, 0.9], ["-100%", "0%"]);
+  const rightX = forceClosed ? "0%" : useTransform(smoothProgress, [0.2, 0.9], ["100%", "0%"]);
+  const titleOpacity = forceClosed ? 1 : useTransform(smoothProgress, [0.2, 0.8], [0, 1]); 
+
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+      const check = () => setIsMobile(window.innerWidth < 768);
+      check();
+      window.addEventListener('resize', check);
+      return () => window.removeEventListener('resize', check);
   }, []);
-  
+
+  const getGridPos = (i: number, isLeftGroup: boolean): [number, number, number] => {
+      if (isMobile) {
+          const columnX = isLeftGroup ? -1.5 : 1.5; 
+          const yStart = 3.5; 
+          const yGap = 2.2; 
+          return [columnX, yStart - (i * yGap), 0];
+      } else {
+          const col = i % 2; 
+          const row = Math.floor(i / 2);
+          const xSpacing = 2.2; 
+          const ySpacing = 2.2; 
+          const sideCenterX = isLeftGroup ? -2.8 : 2.8;
+          const x = sideCenterX + (col === 0 ? -xSpacing/2 : xSpacing/2);
+          const y = 1.0 - (row * ySpacing);
+          return [x, y, 0];
+      }
+  };
+
   const getHeightClass = () => {
-      if (!forceClosed) return "h-[200vh]"; 
-      return "min-h-[150vh] md:h-screen md:min-h-screen"; 
+      if (isMobile) return "h-[200vh]";
+      if (forceClosed) return "h-screen w-full overflow-hidden"; 
+      return "h-[250vh]";
   };
 
   return (
-    <div ref={containerRef} className={`relative w-full bg-black z-30 ${getHeightClass()}`}>
-      
-      <div className={`sticky top-0 w-full overflow-hidden h-screen`}>
+    <div ref={containerRef} className={`relative bg-black ${getHeightClass()}`}>
+      <div className={`sticky top-0 w-full h-screen overflow-hidden`}>
         
         <CurtainSide x={leftX} side="left" />
         <CurtainSide x={rightX} side="right" />
 
         <motion.div 
           className="absolute inset-0 z-40" 
-          style={{ 
-            opacity: isMobile && forceClosed ? 1 : cardsOpacity,
-            pointerEvents: (isMobile && forceClosed) ? 'none' : 'auto'
-          }}
+          style={{ pointerEvents: isMobile ? 'none' : 'auto', touchAction: 'pan-y' }}
         >
             <Canvas 
-                camera={{ position: [0, 0, 18], fov: isMobile ? 28 : 20 }} 
-                gl={{ alpha: true, antialias: true, premultipliedAlpha: false }}
+                camera={{ position: [0, 0, 18], fov: isMobile ? 32 : 20 }}
+                // 2. PERFORMANCE SETTINGS
+                dpr={[1, 1.5]} // Cap at 1.5x pixel ratio (Fixes lag on Macs/High-res screens)
+                gl={{ 
+                  alpha: true, 
+                  antialias: true,
+                  powerPreference: "high-performance",
+                  stencil: false,
+                  depth: true 
+                }}
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
             >
                 <ambientLight intensity={2} />
                 <Environment blur={0.75}>
-                    <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
-                    <Lightformer intensity={3} color="white" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+                    <Lightformer intensity={2} color="white" position={[0, -1, 5]} scale={[10, 1, 1]} />
+                    <Lightformer intensity={3} color="white" position={[-1, -1, 1]} scale={[10, 1, 1]} />
                 </Environment>
 
                 <Suspense fallback={null}>
-                    <RapierPhysics gravity={[0, -40, 0]} timeStep={1/60}>
-                        <LanyardGroup forceClosed={forceClosed} />
-                    </RapierPhysics>
+                    <LeftCurtainGroup smoothProgress={smoothProgress} forceClosed={forceClosed}>
+                        {teamMembers.slice(0, 4).map((m, i) => (
+                             <HangingCard 
+                                key={m.id}
+                                position={getGridPos(i, true)}
+                                name={m.name}
+                                role={m.role}
+                                instaId={m.instaId}
+                                imageUrl={m.img}
+                             />
+                        ))}
+                    </LeftCurtainGroup>
+
+                    <RightCurtainGroup smoothProgress={smoothProgress} forceClosed={forceClosed}>
+                        {teamMembers.slice(4, 8).map((m, i) => (
+                             <HangingCard 
+                                key={m.id}
+                                position={getGridPos(i, false)}
+                                name={m.name}
+                                role={m.role}
+                                instaId={m.instaId}
+                                imageUrl={m.img}
+                             />
+                        ))}
+                    </RightCurtainGroup>
                 </Suspense>
             </Canvas>
         </motion.div>
 
         <motion.div 
           style={{ opacity: titleOpacity }}
-          className="absolute top-6 left-0 right-0 z-50 text-center pointer-events-none px-4"
+          className="absolute top-6 md:top-31 left-0 right-0 z-50 text-center pointer-events-none px-4"
         >
-           <h1 className="text-[12vw] md:text-7xl font-black text-[#FFEBD0] uppercase tracking-widest drop-shadow-2xl leading-tight">
+           <h1 
+             className="text-[10vw] md:text-6xl font-black text-[#FFEBD0] uppercase leading-tight"
+             style={{ 
+                fontFamily: "'Mosca Laroke', sans-serif",
+                textShadow: "0 10px 30px rgba(0,0,0,0.8), 0 0 40px rgba(255, 100, 0, 0.3)" 
+             }}
+           >
              Contact Us
            </h1>
-           <p className="text-white/60 text-xs md:text-sm mt-2 tracking-widest font-light">
-             {isMobile && forceClosed ? "SCROLL TO VIEW TEAM" : "DRAG CARDS TO INTERACT"}
-           </p>
         </motion.div>
-
       </div>
     </div>
   );

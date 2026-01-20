@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { useEffect, useRef, useMemo, useState } from 'react';
 import { useFrame, extend, useThree } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, Html, useTexture } from '@react-three/drei';
 import {
   BallCollider,
   CuboidCollider,
@@ -10,12 +10,14 @@ import {
   useSphericalJoint,
 } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { generateCardTexture } from '../utils/generateCardTexture';
+import ProfileCard from './ProfileCard';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function SafeLanyard({ position, name, role, email, imageUrl }: any) {
-  const { gl } = useThree();
+  const { width: viewportWidth } = useThree().viewport;
+  const isMobile = viewportWidth < 8;
+
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -27,35 +29,16 @@ export default function SafeLanyard({ position, name, role, email, imageUrl }: a
   const rot = useMemo(() => new THREE.Vector3(), []);
   const dir = useMemo(() => new THREE.Vector3(), []);
 
-  const { nodes, materials } = useGLTF('/assets/3d/card.glb') as any;
+  // 1. ASSETS
+  const { nodes } = useGLTF('/assets/3d/card.glb') as any;
+  const backTexture = useTexture('/assets/tag_texture.png');
+  backTexture.wrapS = THREE.RepeatWrapping;
+  backTexture.wrapT = THREE.RepeatWrapping;
 
-  // --- TEXTURE HANDLING ---
-  const createFallbackTexture = useMemo(() => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 800;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 512, 800);
-    }
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
-  }, []);
-
-  const [texture, setTexture] = useState<THREE.CanvasTexture>(createFallbackTexture);
-  
-  useEffect(() => {
-    let isMounted = true;
-    generateCardTexture(imageUrl, name, role, email, gl)
-      .then((tex) => {
-        if (isMounted) setTexture(tex);
-        else tex.dispose();
-      })
-      .catch((err) => console.error(err));
-    return () => { isMounted = false; };
-  }, [imageUrl, name, role, email, gl]);
+  // 2. MESH FINDER
+  const cardMesh = nodes.card || Object.values(nodes).find((n: any) => n.isMesh);
+  const clipMesh = nodes.clip || Object.values(nodes).find((n: any) => n.isMesh && n.name.includes('clip'));
+  const clampMesh = nodes.clamp || Object.values(nodes).find((n: any) => n.isMesh && n.name.includes('clamp'));
 
   // --- PHYSICS ---
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
@@ -97,7 +80,8 @@ export default function SafeLanyard({ position, name, role, email, imageUrl }: a
         });
 
         const cardPos = card.current.translation();
-        const clipPos = new THREE.Vector3(cardPos.x, cardPos.y + 0.5, cardPos.z);
+        // Adjust clip offset so rope looks attached to top of card
+        const clipPos = new THREE.Vector3(cardPos.x, cardPos.y + 0.4, cardPos.z);
 
         curve.points[0].copy(clipPos);
         curve.points[1].copy(j2.current.lerped);
@@ -114,8 +98,16 @@ export default function SafeLanyard({ position, name, role, email, imageUrl }: a
     }
   });
 
-  const jointProps = { type: 'kinematic' as const, canSleep: false, colliders: false, angularDamping: 8, linearDamping: 8 } as any;
-  const segmentProps = { type: 'dynamic' as const, canSleep: true, colliders: false, angularDamping: 8, linearDamping: 8 } as any;
+  // PHYSICS SETTINGS: Increased damping to make it feel like a heavy ID card
+  const jointProps = { type: 'kinematic' as const, canSleep: false, colliders: false, angularDamping: 2, linearDamping: 2 } as any;
+  const segmentProps = { type: 'dynamic' as const, canSleep: false, colliders: false, angularDamping: 4, linearDamping: 2, mass: 2 } as any;
+
+  if (!cardMesh) return null;
+
+  // CARD DIMENSIONS (Robust size for physics engine)
+  const CARD_WIDTH = 1.8; 
+  const CARD_HEIGHT = 1.1; 
+  const HTML_SCALE = isMobile ? 0.22 : 0.25; // Smaller on mobile
 
   return (
     <>
@@ -125,39 +117,87 @@ export default function SafeLanyard({ position, name, role, email, imageUrl }: a
         <RigidBody position={[0.1, 0, 0]} ref={j2} {...jointProps}><BallCollider args={[0.05]} /></RigidBody>
         
         <RigidBody position={[0.15, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
-          <CuboidCollider args={[0.9, 0.9, 0.01]} />
+          {/* COLLIDER: Matches the visual card size 
+             args = [halfWidth, halfHeight, halfDepth] 
+          */}
+          <CuboidCollider args={[CARD_WIDTH / 2, CARD_HEIGHT / 2, 0.05]} />
+          
           <group
-            scale={[1.8, 1.2, 1.2]} 
-            position={[0, -0.8, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={(e: any) => { e.target.releasePointerCapture(e.pointerId); drag(false); }}
-            onPointerDown={(e: any) => { e.target.setPointerCapture(e.pointerId); drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation()))); }}
+            onPointerDown={(e: any) => { 
+                // Important: Stop propagation so we don't click through the card
+                e.stopPropagation();
+                e.target.setPointerCapture(e.pointerId); 
+                drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation()))); 
+            }}
           >
-            {/* ID CARD */}
-            <mesh geometry={nodes.card.geometry}>
-              <meshPhysicalMaterial 
-                map={texture} 
-                map-flipY={false} // Ensures text is upright
-                clearcoat={0.5} 
-                clearcoatRoughness={0.1} 
-                roughness={0.8} 
-                metalness={0.1} 
-              />
+            {/* 1. INVISIBLE HITBOX (Critical for "Responsiveness") */}
+            {/* This ensures your mouse/finger hits this plane first, triggering the drag */}
+            <mesh visible={false}>
+                <planeGeometry args={[CARD_WIDTH, CARD_HEIGHT]} />
+                <meshBasicMaterial transparent opacity={0} />
             </mesh>
+
+            {/* 2. CARD MESH (Backside) */}
+            <mesh 
+              geometry={cardMesh.geometry} 
+              scale={[1.15, 0.6, 1.15]} // Adjusted to match the HTML card shape
+            >
+                <meshStandardMaterial 
+                    map={backTexture} 
+                    map-flipY={false}
+                    color="white"
+                    roughness={0.4}
+                />
+            </mesh>
+
+            {/* 3. HTML FRONT */}
+            <Html 
+                transform 
+                wrapperClass="html-card"
+                position={[0, 0, 0.06]} // Slightly in front
+                scale={HTML_SCALE}
+                style={{ pointerEvents: 'none' }} // Disable pointer events on wrapper
+            >
+                {/* Fixed Pixel Size: 
+                   300px * 0.25 scale ~= 75 units in screen space. 
+                   This is a crisp, compact size.
+                */}
+                <div style={{ width: '300px', height: '180px' }}>
+                    <ProfileCard 
+                        name={name}
+                        title={role}
+                        handle={email.split('@')[0]}
+                        avatarUrl={imageUrl}
+                        enableTilt={false}
+                        // Re-enable pointer events ONLY for the button
+                        onContactClick={() => console.log('clicked')}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+            </Html>
             
-            {/* FORCE BLACK CLIPS */}
-            <mesh geometry={nodes.clip.geometry} material={materials.metal}>
-                <meshStandardMaterial color="#111111" metalness={0.8} roughness={0.2} />
-            </mesh>
-            <mesh geometry={nodes.clamp.geometry} material={materials.metal}>
-                <meshStandardMaterial color="#111111" metalness={0.8} roughness={0.2} />
-            </mesh>
+            {/* 4. CLIPS */}
+            <group position={[0, 0.6, 0]}>
+                {clipMesh && (
+                    <mesh geometry={clipMesh.geometry}>
+                        <meshStandardMaterial color="#111111" metalness={0.8} />
+                    </mesh>
+                )}
+                {clampMesh && (
+                    <mesh geometry={clampMesh.geometry}>
+                        <meshStandardMaterial color="#111111" metalness={0.8} />
+                    </mesh>
+                )}
+            </group>
+
           </group>
         </RigidBody>
       </group>
       
-      {/* FORCE BLACK STRING */}
+      {/* STRING */}
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial 

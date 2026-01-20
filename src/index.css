@@ -13,7 +13,10 @@
   font-family: 'Man of Space';
   src: url('./fonts/Man of Space.ttf') format('truetype');
 }
-
+@font-face {
+  font-family: 'Riot block';
+  src: url('./fonts/Riot block.otf') format('truetype');
+}
 /* --- LAYOUT SHIFT FIX --- */
 /* This reserves space for the scrollbar permanently so the center alignment 
    doesn't jump when the loader (no scroll) switches to homepage (scroll). */

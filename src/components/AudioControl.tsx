@@ -1,53 +1,34 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { ASSETS } from '../../public/assets/constants';
+import React, { useState, useEffect } from 'react';
+import { globalAudio, toggleGlobalAudio } from '../utils/audio';
 
 const AudioControl = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio(ASSETS.BG_MUSIC);
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
+    // Sync state with global audio on mount
+    setIsPlaying(!globalAudio.paused);
 
-    // --- ATTEMPT AUTO-PLAY ON MOUNT ---
-    const playPromise = audioRef.current.play();
+    // Optional: Add listeners if external things (like InitialLoader) change the audio state
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
 
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          // Auto-play started!
-          setIsPlaying(true);
-        })
-        .catch((error) => {
-          // Auto-play was prevented by the browser (user interaction required)
-          console.log("Audio autoplay blocked by browser policy:", error);
-          setIsPlaying(false);
-        });
-    }
+    globalAudio.addEventListener('play', handlePlay);
+    globalAudio.addEventListener('pause', handlePause);
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      globalAudio.removeEventListener('play', handlePlay);
+      globalAudio.removeEventListener('pause', handlePause);
     };
   }, []);
 
-  const toggleAudio = () => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(e => console.log("Audio play failed:", e));
-    }
-    setIsPlaying(!isPlaying);
+  const handleToggle = () => {
+    const playing = toggleGlobalAudio();
+    setIsPlaying(playing);
   };
 
   return (
     <button
-      onClick={toggleAudio}
+      onClick={handleToggle}
       className="fixed top-6 right-6 z-[80] pointer-events-auto group"
       aria-label="Toggle Music"
     >

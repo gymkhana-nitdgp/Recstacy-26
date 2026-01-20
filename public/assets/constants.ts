@@ -7,6 +7,7 @@ export const ASSETS = {
     NEBULA_VIDEO: "/nebula.mp4",
     BACK_VIDEO: "/back.mp4",
     BG_MUSIC: "/bgmusic.mp3",
-    LOAD_VIDEO: "/load.mp4", 
     bgImage: "/black.png",
+    LOAD_VIDEO_DESKTOP: '/assets/desktop_intro.mp4',
+  LOAD_VIDEO_MOBILE: '/assets/reel_intro.mp4'
   };

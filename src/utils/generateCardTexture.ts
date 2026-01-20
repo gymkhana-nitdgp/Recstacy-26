@@ -29,30 +29,31 @@ export const generateCardTexture = async (
     throw new Error('Could not get 2d context');
   }
 
-  // 1. SOLID WHITE BACKGROUND (High Contrast)
+  // 1. CLEAR BACKGROUND (Transparent or specific color)
+  // We use white so the text is readable, but you can make it transparent if you want the card material to show through
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, width, height);
 
-  // 2. PROFILE IMAGE
+  // 2. SMALLER PROFILE IMAGE (On Top)
   try {
     const profileImg = await loadProfileImage(imageUrl);
     
-    // Draw in top half
-    const imgX = 56;
-    const imgY = 60;
-    const imgSize = 400;
+    // Config: Smaller image, centered top
+    const imgSize = 300; // Reduced from 400
+    const imgX = (width - imgSize) / 2; // Centered
+    const imgY = 60; // Margin from top
+    const radius = 25; // Rounded corners
 
     // Save context for clipping
     ctx.save();
     
     // Create Rounded Square path
     ctx.beginPath();
-    const radius = 20;
     ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
     ctx.closePath();
     ctx.clip();
 
-    // Draw Image (Object Cover)
+    // Draw Image (Object Cover logic)
     const aspect = profileImg.width / profileImg.height;
     let drawW = imgSize;
     let drawH = imgSize;
@@ -72,7 +73,7 @@ export const generateCardTexture = async (
 
     // Draw Border
     ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 6;
     ctx.beginPath();
     ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
     ctx.stroke();
@@ -80,43 +81,43 @@ export const generateCardTexture = async (
   } catch (err) {
     // Fallback grey box
     ctx.fillStyle = '#cccccc';
-    ctx.fillRect(56, 60, 400, 400);
+    ctx.fillRect((width - 300) / 2, 60, 300, 300);
   }
 
-  // 3. TEXT (Bold and Large)
+  // 3. TEXT DETAILS
   // Name
   ctx.fillStyle = '#000000';
-  ctx.font = 'bold 60px Arial';
+  ctx.font = 'bold 50px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText(name, width / 2, 530);
+  // Positioned below the image
+  ctx.fillText(name, width / 2, 450);
 
   // Role
-  ctx.fillStyle = '#555555';
+  ctx.fillStyle = '#666666';
   ctx.font = 'bold 35px Arial';
-  ctx.fillText(role.toUpperCase(), width / 2, 590);
+  ctx.fillText(role.toUpperCase(), width / 2, 510);
 
-  // 4. EMAIL PILL
-  const emailY = 660;
+  // 4. EMAIL PILL (Bottom)
+  const emailY = 650;
   const pillW = 460;
   const pillH = 70;
   const pillX = (width - pillW) / 2;
 
   // Grey background for email
-  ctx.fillStyle = '#eeeeee';
+  ctx.fillStyle = '#f0f0f0';
   ctx.beginPath();
   ctx.roundRect(pillX, emailY, pillW, pillH, 35);
   ctx.fill();
 
   // Email Text
-  ctx.fillStyle = '#222222';
-  ctx.font = '28px Arial';
-  ctx.fillText(email, width / 2, emailY + 45); // Vertically centered
+  ctx.fillStyle = '#333333';
+  ctx.font = '26px Arial';
+  ctx.fillText(email, width / 2, emailY + 45);
 
   // 5. TEXTURE CREATION
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
-  texture.flipY = false; // Important for GLTF models usually
-  texture.anisotropy = gl.capabilities.getMaxAnisotropy();
+  // texture.flipY = false; // Usually handled in material, but safe to set here too
   
   return texture;
 };
