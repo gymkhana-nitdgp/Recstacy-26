@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Spline from '@splinetool/react-spline';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useNavigate } from 'react-router-dom';
-import { useTransition } from '../context/TransitionContext';
+import { usePageTransition } from '../context/TransitionContext';
 
 export default function SplineGateway() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSplineLoaded, setIsSplineLoaded] = useState(false);
-  const { isTransitioning, setIsTransitioning, targetPath } = useTransition();
+  const { currentLoader, endTransition, targetPath } = usePageTransition();
   const navigate = useNavigate();
 
   // Animation Configuration
@@ -17,12 +17,12 @@ export default function SplineGateway() {
 
   useGSAP(() => {
     // Only run if triggered by Context
-    if (!isTransitioning || !containerRef.current) return;
+    if (!currentLoader || currentLoader !== 'forward' || !containerRef.current) return;
 
     const tl = gsap.timeline({
       onComplete: () => {
         // Animation finished: Hide loader and tell app we are done
-        setIsTransitioning(false);
+        endTransition();
         if (containerRef.current) {
             gsap.set(containerRef.current, { display: 'none', xPercent: -100 });
         }
@@ -40,7 +40,7 @@ export default function SplineGateway() {
         onComplete: () => {
             // --- CRITICAL MOMENT ---
             // Screen is covered. Now we switch pages.
-            navigate(targetPath.current);
+            navigate(targetPath);
             window.scrollTo(0, 0);
         }
     })
@@ -59,7 +59,7 @@ export default function SplineGateway() {
         ease: "power3.in",
     });
 
-  }, [isTransitioning]); // Runs whenever isTransitioning becomes true
+  }, [currentLoader, targetPath]); // Runs whenever isTransitioning becomes true
 
   return (
     <div 

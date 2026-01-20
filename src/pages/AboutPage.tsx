@@ -1,4 +1,3 @@
-import React from 'react';
 import BackToHome from '../components/BackToHome'; // Import it
 
 const AboutPage = () => {

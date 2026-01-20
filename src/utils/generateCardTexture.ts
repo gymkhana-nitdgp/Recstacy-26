@@ -15,7 +15,7 @@ export const generateCardTexture = async (
   name: string,
   role: string,
   email: string = "hello@example.com",
-  gl: THREE.WebGLRenderer
+  _gl: THREE.WebGLRenderer
 ): Promise<THREE.CanvasTexture> => {
   const width = 512;
   const height = 800;

@@ -19,22 +19,19 @@ const P8 = "/assets/people/person8.png";
 const ALL_TEXTURES = [P1, P2, P3, P4, P5, P6, P7, P8];
 
 const teamMembers = [
-  { id: 1, name: "Debangshu", role: "Coordinator 4th year", instaId: "debangshu_here_", img: P1 },
-  { id: 2, name: "Bikarna", role: "Coordinator 4th year", instaId: "bikarna_21", img: P2 },
-  { id: 3, name: "Shreyan", role: "Coordinator 4th year", instaId: "shreyan_roy_", img: P3 },
-  { id: 4, name: "Rishikesh", role: "Coordinator 4th year", instaId: "", img: P4 },
-  { id: 5, name: "Soham", role: "Coordinator 3rd year", instaId: "sohamchatrg", img: P5 },
-  { id: 6, name: "Abhra", role: "Coordinator 3rd year", instaId: "abhra_00", img: P6 },
-  { id: 7, name: "Ritam", role: "Coordinator 3rd year", instaId: "ritam_koley_10", img: P7 },
-  { id: 8, name: "Zafar", role: "Coordinator 3rd year", instaId: "zaf_ar029", img: P8 },
+  { id: 1, name: "Debangshu", role: "Coordinator", instaId: "debangshu_here_", img: P1 },
+  { id: 2, name: "Bikarna", role: "Coordinator", instaId: "bikarna_21", img: P2 },
+  { id: 3, name: "Shreyan", role: "Coordinato", instaId: "shreyan_roy_", img: P3 },
+  { id: 4, name: "Rishikesh", role: "Coordinator", instaId: "", img: P4 },
+  { id: 5, name: "Soham", role: "Member", instaId: "sohamchatrg", img: P5 },
+  { id: 6, name: "Abhra", role: "Member", instaId: "abhra_00", img: P6 },
+  { id: 7, name: "Ritam", role: "Member", instaId: "ritam_koley_10", img: P7 },
+  { id: 8, name: "Zafar", role: "Member", instaId: "zaf_ar029", img: P8 },
 ];
 
 interface TheaterStageProps {
   forceClosed?: boolean;
 }
-
-// 1. PRELOAD TEXTURES (Crucial for smooth entry)
-useTexture.preload(ALL_TEXTURES);
 
 const getProgress = (raw: number, forceClosed: boolean) => {
     if (forceClosed) return 1;
@@ -80,10 +77,10 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
     offset: ["start start", "end end"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
-  const leftX = forceClosed ? "0%" : useTransform(smoothProgress, [0.2, 0.9], ["-100%", "0%"]);
-  const rightX = forceClosed ? "0%" : useTransform(smoothProgress, [0.2, 0.9], ["100%", "0%"]);
-  const titleOpacity = forceClosed ? 1 : useTransform(smoothProgress, [0.2, 0.8], [0, 1]); 
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 25, damping: 35, mass: 1 });
+  const leftX = forceClosed ? "0%" : useTransform(smoothProgress, [0.15, 0.95], ["-100%", "0%"]);
+  const rightX = forceClosed ? "0%" : useTransform(smoothProgress, [0.15, 0.95], ["100%", "0%"]);
+  const titleOpacity = forceClosed ? 1 : useTransform(smoothProgress, [0.15, 0.85], [0, 1]); 
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -92,6 +89,11 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
       check();
       window.addEventListener('resize', check);
       return () => window.removeEventListener('resize', check);
+  }, []);
+
+  useEffect(() => {
+      // Preload textures for the component
+      useTexture.preload(ALL_TEXTURES);
   }, []);
 
   const getGridPos = (i: number, isLeftGroup: boolean): [number, number, number] => {
@@ -113,9 +115,9 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
   };
 
   const getHeightClass = () => {
-      if (isMobile) return "h-[200vh]";
+      if (isMobile) return "h-[250vh]";
       if (forceClosed) return "h-screen w-full overflow-hidden"; 
-      return "h-[250vh]";
+      return "h-[350vh]";
   };
 
   return (
@@ -131,8 +133,7 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
         >
             <Canvas 
                 camera={{ position: [0, 0, 18], fov: isMobile ? 32 : 20 }}
-                // 2. PERFORMANCE SETTINGS
-                dpr={[1, 1.5]} // Cap at 1.5x pixel ratio (Fixes lag on Macs/High-res screens)
+                dpr={[1, 1.5]}
                 gl={{ 
                   alpha: true, 
                   antialias: true,

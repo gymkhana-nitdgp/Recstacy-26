@@ -316,7 +316,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                       <div className="text-5xl font-bold text-black leading-none drop-shadow-sm tracking-wide">
                         {name}
                       </div>
-                      <div className="text-3xl font-medium text-black/80 leading-none margin-top-3">
+                      <div className="text-4xl font-medium text-black/80 leading-none margin-top-3">
                         {title}
                       </div>
                     </div>

@@ -13,12 +13,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AboutUsSection: React.FC = () => {
   return (
-    <section className="w-full bg-zinc-900 flex flex-col items-center justify-center relative z-20 border-t border-white/10 py-24 mb-20">
+    <section className="w-full bg-zinc-900 flex flex-col items-center justify-center relative z-20 border-t border-white/10 py-6 md:py-12 mb-0">
       <div className="max-w-4xl text-center px-6">
-        <h2 className="text-4xl md:text-6xl font-black text-[#FFEBD0] mb-6 tracking-wide uppercase">
+        <h2 className="text-2xl md:text-6xl font-black text-[#FFEBD0] mb-3 md:mb-6 tracking-wide uppercase">
           About Us
         </h2>
-        <p className="text-white/60 text-lg md:text-xl leading-relaxed">
+        <p className="text-white/60 text-sm md:text-xl leading-relaxed">
           Recstacy is the annual cultural fest of NIT Durgapur.
         </p>
       </div>
@@ -27,7 +27,7 @@ const AboutUsSection: React.FC = () => {
 };
 
 const HomePage: React.FC = () => {
-  const { currentLoader } = usePageTransition();
+  const { currentLoader, endTransition } = usePageTransition();
   const isTransitioning = currentLoader !== 'none';
 
   const [showInitialLoader, setShowInitialLoader] = useState(() => {
@@ -39,6 +39,26 @@ const HomePage: React.FC = () => {
   });
 
   const [animationsStarted, setAnimationsStarted] = useState(!showInitialLoader);
+
+  // Scroll to top when component mounts or when coming from routing
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Also try with a small delay to ensure it happens
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  }, []);
+
+  // Scroll to top and end transition when leaving transition state
+  useEffect(() => {
+    if (currentLoader === 'routing' && !isTransitioning) {
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        endTransition();
+      }, 100);
+    }
+  }, [currentLoader, isTransitioning, endTransition]);
 
   useEffect(() => {
     if (!isTransitioning && !showInitialLoader) {
@@ -71,6 +91,13 @@ const HomePage: React.FC = () => {
         <AboutUsSection />
         
         <TheaterStage forceClosed={false} />
+
+        {/* Developed by footer */}
+        <div className="bg-black py-4 px-4 text-center border-t border-gray-800">
+          <p className="text-gray-300 text-sm md:text-base">
+            Developed by: <a href="https://www.instagram.com/snehaaaa_2208/" target="_blank" rel="noopener noreferrer" className="text-[#FFEBD0] font-semibold hover:opacity-80 transition-opacity">Sneha</a> and <a href="https://www.instagram.com/ritam_koley_10/" target="_blank" rel="noopener noreferrer" className="text-[#FFEBD0] font-semibold hover:opacity-80 transition-opacity">Ritam</a>
+          </p>
+        </div>
       </main>
     </>
   );

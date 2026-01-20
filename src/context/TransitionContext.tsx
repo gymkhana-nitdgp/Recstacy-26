@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
+// Change line 1 to:
+import React, { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react'; // Add this separate line
 // Defines the loader states
 type LoaderType = 'none' | 'forward' | 'routing';
 

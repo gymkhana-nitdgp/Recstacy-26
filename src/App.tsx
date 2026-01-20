@@ -8,9 +8,9 @@ import ContactPage from './pages/ContactPage';
 import SponsorsPage from './pages/SponsorsPage';
 import RoutingLoader from './components/RoutingLoader'; 
 import ForwardLoader from './components/ForwardLoader'; 
+import EventsPage from './pages/EventsPage';
 import { TransitionProvider, usePageTransition } from './context/TransitionContext';
 
-const EventsPage = () => <div className="h-screen bg-black flex items-center justify-center text-4xl font-bold text-[#FFEBD0]">EVENTS PAGE</div>;
 
 const AppContent: React.FC = () => {
   const location = useLocation();

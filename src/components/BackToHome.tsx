@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTransition } from '../context/TransitionContext';
+import { usePageTransition } from '../context/TransitionContext';
 
 interface BackProps {
   label?: string;
@@ -7,12 +7,12 @@ interface BackProps {
 }
 
 const BackToHome: React.FC<BackProps> = ({ label = "BACK TO HOME", className = "" }) => {
-  const { triggerTransition } = useTransition();
+  const { startTransition } = usePageTransition();
 
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault();
     // This triggers the RoutingLoader animation -> Then navigates to '/'
-    triggerTransition('/');
+    startTransition('routing', '/');
   };
 
   return (

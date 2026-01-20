@@ -49,14 +49,14 @@ export default function HangingCard({ position, name, role, instaId, imageUrl }:
       <group position={[0, 0, 0]} scale={0.65}>
         
         {/* Body - WIDENED to 2.8 to fit very large text/content */}
-        <mesh geometry={cardMesh.geometry} scale={[2.8, 0.6, 1.15]}>
-          <meshStandardMaterial color="#1a1a1a" roughness={0.5} metalness={0.1} />
+<mesh geometry={(cardMesh as THREE.Mesh).geometry} scale={[2.8, 0.6, 1.15]}>
+            <meshStandardMaterial color="#1a1a1a" roughness={0.5} metalness={0.1} />
         </mesh>
 
         {/* Clips */}
         <group position={[0, 0.6, 0]}>
-          {clipMesh && <mesh geometry={clipMesh.geometry}><meshStandardMaterial color="#111" /></mesh>}
-          {clampMesh && <mesh geometry={clampMesh.geometry}><meshStandardMaterial color="#111" /></mesh>}
+{clipMesh && <mesh geometry={(clipMesh as THREE.Mesh).geometry}><meshStandardMaterial color="#111" /></mesh>}
+{clampMesh && <mesh geometry={(clampMesh as THREE.Mesh).geometry}><meshStandardMaterial color="#111" /></mesh>}
         </group>
 
         {/* HTML Content */}

@@ -148,7 +148,7 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
   const glowClass = "filter drop-shadow-[0_5px_15px_rgba(0,0,0,1)] drop-shadow-[0_0_20px_rgba(255,69,0,0.8)] drop-shadow-[0_0_40px_rgba(255,100,0,0.5)]";
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-black overflow-hidden flex flex-col items-center justify-center pt-0 lg:justify-start lg:pt-[15vh]">
+    <div ref={containerRef} className="relative w-full h-screen md:h-screen bg-black overflow-hidden flex flex-col items-center justify-center pt-0 lg:justify-start lg:pt-[15vh]">
 
       <AudioControl />
 
@@ -166,7 +166,7 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
       </div>
 
       {/* Added perspective to wrapper for realistic 3D Text Tilt */}
-      <div className="scene-wrapper relative flex items-center justify-center z-10 -mt-32 md:mt-0 perspective-[1000px]">
+      <div className="scene-wrapper relative flex items-center justify-center z-10 -mt-8 md:-mt-16 perspective-[1000px]">
         
         {/* TEXT (Original Decoration + Magnetic Effect) */}
         <h1 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Spline from '@splinetool/react-spline';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -7,7 +7,6 @@ import { usePageTransition } from '../context/TransitionContext';
 
 export default function RoutingLoader() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
   
   const { currentLoader, endTransition, targetPath } = usePageTransition();
   const navigate = useNavigate();
@@ -44,6 +43,7 @@ export default function RoutingLoader() {
     // 4. NAVIGATE
     .add(() => {
         navigate(targetPath);
+        window.scrollTo(0, 0);
     })
 
     // 5. FADE OUT
@@ -53,7 +53,7 @@ export default function RoutingLoader() {
         ease: "power2.inOut"
     });
 
-  }, [isActive, targetPath]);
+  }, [isActive, targetPath, endTransition, navigate]);
 
   return (
     <div 
@@ -80,7 +80,6 @@ export default function RoutingLoader() {
             <div className="relative w-full h-full z-10">
                 <Spline 
                     scene="https://prod.spline.design/1P0VjjbJNGozWFSC/scene.splinecode"
-                    onLoad={() => setIsSplineLoaded(true)}
                 />
             </div>
         </div>
