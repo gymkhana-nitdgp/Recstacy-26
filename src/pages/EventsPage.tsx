@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MovieCarousel from '../components/MovieCarousel';
 import { MOVIES } from './../constants';
-
+import bg from "../../public/bg.mp4";
 const EventsPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="relative min-h-screen text-white overflow-hidden selection:bg-indigo-500/30">
       
@@ -13,9 +17,9 @@ const EventsPage: React.FC = () => {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-90" // Slightly reduced opacity can help FPS
+          className="absolute inset-0 w-full h-full object-cover opacity-90"
         >
-          <source src="/bg.mp4" type="video/mp4" />
+          <source src={bg} type="video/mp4" />
         </video>
         {/* Overlay to ensure text is readable */}
         <div className="absolute inset-0 bg-black/40" />

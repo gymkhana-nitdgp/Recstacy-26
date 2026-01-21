@@ -5,7 +5,7 @@ export const ASSETS = {
     INSTA_MOON_IMG: "/moon.png",
     HAMBURGER: "/hamburger.png",
     NEBULA_VIDEO: "/nebula.mp4",
-    BACK_VIDEO: "/back.mp4",
+    BACK_VIDEO: "/bg.mp4",
     BG_MUSIC: "/bgmusic.mp3",
     bgImage: "/black.png",
     LOAD_VIDEO_DESKTOP: '/assets/desktop_intro.mp4',

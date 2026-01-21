@@ -1,6 +1,11 @@
+import React, { useEffect } from 'react';
 import BackToHome from '../components/BackToHome'; // Import it
 
 const AboutPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="w-full min-h-screen bg-black flex flex-col items-center justify-center text-white">
       <h1 className="text-4xl mb-10">About Us</h1>

@@ -68,3 +68,25 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* --- 3D CINEMATIC UTILITIES --- */
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+@keyframes golden-pulse {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 191, 0, 0.3)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 15px rgba(255, 191, 0, 0.7)); transform: scale(1.05); }
+}
+
+.animate-golden-glow {
+  animation: golden-pulse 3s infinite ease-in-out;
+}

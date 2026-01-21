@@ -39,13 +39,13 @@ const Countdown: React.FC = () => {
 
   return (
     <div
-      className={`
-          absolute z-40 select-none pointer-events-none flex items-start
-          top-[48%] left-1/2 -translate-x-1/2
-          md:top-auto md:bottom-12 md:left-12 md:right-auto md:translate-x-0
-        `}
-      style={{ fontFamily: "'Riot block', sans-serif" }}
-    >
+  className={`
+      absolute z-40 select-none pointer-events-none flex items-start
+      top-[50%] left-1/2 -translate-x-1/2
+      md:top-auto md:bottom-12 md:left-12 md:right-auto md:translate-x-0
+    `}
+  style={{ fontFamily: "'Riot block', sans-serif" }}
+>
       {labels.map((label, idx) => (
         <React.Fragment key={idx}>
           <div className="flex flex-col items-center">
