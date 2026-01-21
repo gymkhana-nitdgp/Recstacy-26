@@ -8,23 +8,9 @@ import { usePageTransition } from '../context/TransitionContext';
 import { TheaterStage } from '../components/TheaterStage';
 // 1. IMPORT THE AUDIO UTILITY
 import { playGlobalAudio } from '../utils/audio'; 
+import AboutPage from './AboutPage';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const AboutUsSection: React.FC = () => {
-  return (
-    <section className="w-full bg-zinc-900 flex flex-col items-center justify-center relative z-20 border-t border-white/10 py-6 md:py-12 mb-0">
-      <div className="max-w-4xl text-center px-6">
-        <h2 className="text-2xl md:text-6xl font-black text-[#FFEBD0] mb-3 md:mb-6 tracking-wide uppercase">
-          About Us
-        </h2>
-        <p className="text-white/60 text-sm md:text-xl leading-relaxed">
-          Recstacy is the annual cultural fest of NIT Durgapur.
-        </p>
-      </div>
-    </section>
-  );
-};
 
 const HomePage: React.FC = () => {
   const { currentLoader, endTransition } = usePageTransition();
@@ -88,7 +74,8 @@ const HomePage: React.FC = () => {
       <main className="bg-black min-h-screen">
         <Hero startAnimation={animationsStarted} />
         
-        <AboutUsSection />
+        {/* Replaced local AboutUsSection with the imported AboutPage */}
+        <AboutPage />
         
         <TheaterStage forceClosed={false} />
 

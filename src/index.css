@@ -12,6 +12,22 @@
   .font-mosca {
     font-family: 'Mosca Laroke', sans-serif;
   }
+  .font-cinzel {
+    font-family: 'Cinzel', serif;
+  }
+  .font-mosca-laroke {
+    font-family: 'Mosca Laroke', serif;
+  }
+  .font-jmh-typewriter {
+    font-family: 'JMH Typewriter', monospace;
+  }
+  /* Custom golden glow effects */
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  }
+  .text-glow-gold {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+  }
 
 /* 2. Timestamp Font */
 @font-face {

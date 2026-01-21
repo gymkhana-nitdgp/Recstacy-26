@@ -17,3 +17,17 @@ export interface AIInsight {
   vibe: string;
   similarMovies: string[];
 }
+
+export interface MediaControlProps {
+  onPrev?: () => void;
+  onNext?: () => void;
+  onTogglePlay?: () => void;
+  isPlaying?: boolean;
+}
+
+export interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+  title?: string;
+  bodyClassName?: string;
+}
