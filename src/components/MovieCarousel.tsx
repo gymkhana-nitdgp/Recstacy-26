@@ -30,6 +30,9 @@ const MovieCarousel: React.FC<MovieCarouselProps> = ({ movies }) => {
 
   useEffect(() => {
     updateRadius();
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('resize', updateRadius);
     return () => window.removeEventListener('resize', updateRadius);
   }, [updateRadius]);

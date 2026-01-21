@@ -2,11 +2,10 @@ import  { useState, useEffect } from 'react';
 import { globalAudio, toggleGlobalAudio } from '../utils/audio';
 
 const AudioControl = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(() => !globalAudio.paused);
 
   useEffect(() => {
-    // Sync state with global audio on mount
-    setIsPlaying(!globalAudio.paused);
+    // Add listeners if external things (like InitialLoader) change the audio state
 
     // Optional: Add listeners if external things (like InitialLoader) change the audio state
     const handlePlay = () => setIsPlaying(true);

@@ -108,7 +108,7 @@ const SponsorsPage: React.FC = () => {
       <section 
         ref={sectionRef} 
         // CHANGED: Added -mt-[20vh] to pull section up, removed justify-center to let content float top
-        className="relative w-full min-h-screen flex flex-col items-center overflow-hidden bg-black z-40 -mt-[20vh]"
+        className="relative w-full min-h-screen flex flex-col items-center overflow-hidden bg-black z-40 mt-[5vh]"
       >
         {/* BACKGROUND */}
         <div 

@@ -9,5 +9,6 @@ export const ASSETS = {
     BG_MUSIC: "/bgmusic.mp3",
     bgImage: "/black.png",
     LOAD_VIDEO_DESKTOP: '/assets/desktop_intro.mp4',
-  LOAD_VIDEO_MOBILE: '/assets/reel_intro.mp4'
+    LOAD_VIDEO_MOBILE: '/assets/reel_intro.mp4',
+    LOGO: '/logo.png'
   };
