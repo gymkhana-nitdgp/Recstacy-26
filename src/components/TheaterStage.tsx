@@ -21,7 +21,7 @@ const ALL_TEXTURES = [P1, P2, P3, P4, P5, P6, P7, P8];
 const teamMembers = [
   { id: 1, name: "Debangshu", role: "Coordinator", instaId: "debangshu_here_", img: P1 },
   { id: 2, name: "Bikarna", role: "Coordinator", instaId: "bikarna_21", img: P2 },
-  { id: 3, name: "Shreyan", role: "Coordinato", instaId: "shreyan_roy_", img: P3 },
+  { id: 3, name: "Shreyan", role: "Coordinator", instaId: "shreyan_roy_", img: P3 },
   { id: 4, name: "Rishikesh", role: "Coordinator", instaId: "", img: P4 },
   { id: 5, name: "Soham", role: "Member", instaId: "sohamchatrg", img: P5 },
   { id: 6, name: "Abhra", role: "Member", instaId: "abhra_00", img: P6 },
