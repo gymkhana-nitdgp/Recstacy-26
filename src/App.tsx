@@ -1,21 +1,12 @@
-// src/App.tsx
 import React, { useLayoutEffect, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-
-// Context
 import { TransitionProvider, usePageTransition } from './context/TransitionContext';
-
-// Components
 import Navbar from './components/Navbar';
-// import RoutingLoader from './components/RoutingLoader'; 
 import ForwardLoader from './components/ForwardLoader'; 
-
-// Pages
 import HomePage from './pages/HomePage';
 import ContactPage from './pages/ContactPage';
-// import SponsorsPage from './pages/SponsorsPage';
 import SponsorsPage from './components/sponsor/Sponsor';
-import EventsPage from './pages/EventsPage'; // <--- This imports the optimized carousel page
+import EventsPage from './pages/EventsPage';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -27,19 +18,18 @@ const AppContent: React.FC = () => {
       // BACK BUTTON LOGIC
       if (location.pathname === '/' && prevPath.current && prevPath.current !== '/') {
            if (currentLoader === 'none') {
-               startTransition('routing', '/'); 
+               // FIX: Changed 'routing' to 'forward'
+               startTransition('forward', '/'); 
            }
       }
       prevPath.current = location.pathname;
   }, [location, currentLoader, startTransition]);
 
   return (
-    // Added selection color here to apply globally
     <div className="bg-black min-h-screen text-white selection:bg-indigo-500/30">
       <Navbar />
 
-      {/* <RoutingLoader /> */}
-
+      {/* FIX: Ensure ForwardLoader is used when state is 'forward' */}
       {currentLoader === 'forward' && (
          <ForwardLoader 
             onMidway={() => navigate(targetPath)} 

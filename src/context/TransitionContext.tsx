@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
-// OPTIMIZATION: Simplified to just 'curtain'
-type LoaderType = 'none' | 'curtain'; 
+// FIX: This must include 'forward' to allow startTransition('forward')
+type LoaderType = 'none' | 'forward'; 
 
 interface TransitionContextType {
   currentLoader: LoaderType;
