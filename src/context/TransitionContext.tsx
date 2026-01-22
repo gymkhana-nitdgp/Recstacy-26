@@ -1,8 +1,8 @@
-// Change line 1 to:
-import React, { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react'; // Add this separate line
-// Defines the loader states
-type LoaderType = 'none' | 'forward' | 'routing';
+import React, { createContext, useContext, useState, useMemo } from 'react';
+import type { ReactNode } from 'react';
+
+// OPTIMIZATION: Simplified to just 'curtain'
+type LoaderType = 'none' | 'curtain'; 
 
 interface TransitionContextType {
   currentLoader: LoaderType;
@@ -17,23 +17,29 @@ export const TransitionProvider: React.FC<{ children: ReactNode }> = ({ children
   const [currentLoader, setCurrentLoader] = useState<LoaderType>('none');
   const [targetPath, setTargetPath] = useState<string>('/');
 
-  const startTransition = (type: LoaderType, path: string = '/') => {
+  const startTransition = useMemo(() => (type: LoaderType, path: string = '/') => {
     setTargetPath(path);
     setCurrentLoader(type);
-  };
+  }, []);
 
-  const endTransition = () => {
+  const endTransition = useMemo(() => () => {
     setCurrentLoader('none');
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    currentLoader,
+    targetPath,
+    startTransition,
+    endTransition
+  }), [currentLoader, targetPath, startTransition, endTransition]);
 
   return (
-    <TransitionContext.Provider value={{ currentLoader, targetPath, startTransition, endTransition }}>
+    <TransitionContext.Provider value={value}>
       {children}
     </TransitionContext.Provider>
   );
 };
 
-// We renamed this hook to avoid conflicts with React
 export const usePageTransition = () => {
   const context = useContext(TransitionContext);
   if (!context) throw new Error('usePageTransition must be used within a TransitionProvider');

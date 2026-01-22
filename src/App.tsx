@@ -1,22 +1,25 @@
-// App.tsx
+// src/App.tsx
 import React, { useLayoutEffect, useRef } from 'react';
-// 1. Import useNavigate
 import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import ContactPage from './pages/ContactPage';
-import SponsorsPage from './pages/SponsorsPage';
-import RoutingLoader from './components/RoutingLoader'; 
-import ForwardLoader from './components/ForwardLoader'; 
-import EventsPage from './pages/EventsPage';
+
+// Context
 import { TransitionProvider, usePageTransition } from './context/TransitionContext';
 
+// Components
+import Navbar from './components/Navbar';
+// import RoutingLoader from './components/RoutingLoader'; 
+import ForwardLoader from './components/ForwardLoader'; 
+
+// Pages
+import HomePage from './pages/HomePage';
+import ContactPage from './pages/ContactPage';
+// import SponsorsPage from './pages/SponsorsPage';
+import SponsorsPage from './components/sponsor/Sponsor';
+import EventsPage from './pages/EventsPage'; // <--- This imports the optimized carousel page
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  // 2. Initialize navigate
   const navigate = useNavigate(); 
-  // 3. Extract targetPath and endTransition
   const { currentLoader, startTransition, targetPath, endTransition } = usePageTransition(); 
   const prevPath = useRef<string | null>(null);
 
@@ -31,17 +34,15 @@ const AppContent: React.FC = () => {
   }, [location, currentLoader, startTransition]);
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    // Added selection color here to apply globally
+    <div className="bg-black min-h-screen text-white selection:bg-indigo-500/30">
       <Navbar />
 
-      <RoutingLoader />
+      {/* <RoutingLoader /> */}
 
-      {/* 4. Connect the ForwardLoader props */}
       {currentLoader === 'forward' && (
          <ForwardLoader 
-            // Switches the page exactly when curtains are closed
             onMidway={() => navigate(targetPath)} 
-            // Cleans up the loader state when animation finishes
             onComplete={() => endTransition()} 
          />
       )}

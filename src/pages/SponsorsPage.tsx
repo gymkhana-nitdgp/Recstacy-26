@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect } from 'react';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -51,8 +51,14 @@ const SponsorsPage: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // OPTIMIZATION 1: Mobile Detection
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const desktopSponsors = useMemo(() => {
@@ -111,32 +117,33 @@ const SponsorsPage: React.FC = () => {
     <>
       <section 
         ref={sectionRef} 
-        // CHANGED: Added -mt-[20vh] to pull section up, removed justify-center to let content float top
-        className="relative w-full min-h-screen flex flex-col items-center overflow-hidden bg-black z-40 -mt-[20vh]"
+        className="relative w-full min-h-screen flex flex-col items-center overflow-hidden bg-black z-40 pt-[2vh]"
       >
         {/* BACKGROUND */}
         <div 
           ref={bgRef}
           className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+          // OPTIMIZATION 2: Simplified Mask for Mobile (optional, but good practice)
           style={{
             maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
           }}
         >
-          <div className="absolute inset-0 bg-[url('/sponsor_phone.png')] md:bg-[url('/sponsor_desktop.png')] bg-cover bg-center bg-fixed" />
+          {/* OPTIMIZATION 3: Conditional Rendering for Background Image */}
+          <div className={`absolute inset-0 bg-cover bg-center bg-fixed ${isMobile ? "bg-[url('/sponsor_phone.png')]" : "bg-[url('/sponsor_desktop.png')]"}`} />
           <div className="absolute inset-0 bg-black/20" /> 
         </div>
 
         {/* CONTENT WRAPPER */}
-        {/* CHANGED: Increased top padding (pt-48) to compensate for the negative margin pull */}
         <div ref={containerRef} className="relative z-10 w-full max-w-[95rem] px-2 pt-48 pb-10 flex flex-col items-center">
           
+          {/* OPTIMIZATION 4: Cheaper Text Shadow on Mobile */}
           <h2 
             ref={titleRef}
             className="font-black text-[#FFEBD0] text-5xl md:text-7xl mb-8 tracking-widest uppercase select-none text-center"
             style={{ 
               fontFamily: "'Mosca Laroke', sans-serif",
-              textShadow: "0 0 30px rgba(255, 165, 0, 0.4)" 
+              textShadow: isMobile ? "0 0 10px rgba(255, 165, 0, 0.4)" : "0 0 30px rgba(255, 165, 0, 0.4)" 
             }}
           >
             Past Sponsors
@@ -174,6 +181,7 @@ const SponsorsPage: React.FC = () => {
                       <img 
                           src={sponsor.src} 
                           alt={sponsor.name}
+                          loading="lazy" // OPTIMIZATION 5: Lazy Load Desktop Images
                           className="sponsor-img w-auto h-full max-h-full max-w-full object-contain filter drop-shadow-[0_0_5px_rgba(0,0,0,0.5)] hover:scale-110 transition-transform duration-300"
                       />
                   </div>
@@ -189,9 +197,16 @@ const SponsorsPage: React.FC = () => {
   );
 };
 
+// OPTIMIZATION 6: Clean Mobile Logo Component
+// Removed 'drop-shadow' class entirely for mobile
 const MobileLogo = ({ src }: { src: string }) => (
     <div className="flex items-center justify-center h-14 p-0.5">
-        <img src={src} className="sponsor-img max-w-full max-h-full object-contain drop-shadow-[0_0_2px_rgba(255,255,255,0.3)]" alt="sponsor" />
+        <img 
+            src={src} 
+            loading="lazy" // Enable Lazy Loading
+            className="sponsor-img max-w-full max-h-full object-contain" // Removed drop-shadow
+            alt="sponsor" 
+        />
     </div>
 );
 

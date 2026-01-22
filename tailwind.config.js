@@ -5,8 +5,16 @@ export default {
       "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-      extend: {},
-    },
+      extend: {
+        fontFamily: {
+          // 'utility-name': ['Font Name in CSS', 'fallback']
+          'mosca': ['"Mosca Laroke"', 'sans-serif'],
+          'cinzel': ['cinzel', 'serif'], 
+          'jmh-typewriter': ['jmh-typewriter', 'monospace'],
+        },
+      },
+        },
     plugins: [],
   }
   
+ 

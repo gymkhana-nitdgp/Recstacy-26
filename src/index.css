@@ -12,6 +12,17 @@
   .font-mosca {
     font-family: 'Mosca Laroke', sans-serif;
   }
+    .font-mosca-laroke {
+    font-family: 'Mosca Laroke', serif;
+  }
+  
+  /* Custom golden glow effects */
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  }
+  .text-glow-gold {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+  }
 
 /* 2. Timestamp Font */
 @font-face {
@@ -22,6 +33,21 @@
   font-family: 'Riot block';
   src: url('./fonts/Riot block.otf') format('truetype');
 }
+/* ... previous fonts ... */
+
+@font-face {
+  font-family: 'cinzel';
+  /* Removed space before Cinzel, changed format to opentype */
+  src: url('./fonts/Cinzel.otf') format('opentype'); 
+}
+
+@font-face {
+  font-family: 'jmh-typewriter';
+  /* Removed space before JMH, changed format to opentype */
+  src: url('./fonts/JMH Typewriter.otf') format('opentype');
+}
+
+/* ... rest of css ... */
 /* --- LAYOUT SHIFT FIX --- */
 /* This reserves space for the scrollbar permanently so the center alignment 
    doesn't jump when the loader (no scroll) switches to homepage (scroll). */

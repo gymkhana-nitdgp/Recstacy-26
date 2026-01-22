@@ -1,5 +1,5 @@
 
-import type { Movie } from './types';
+import type { Movie, Dev } from './types';
 
 export const MOVIES: Movie[] = [
   {
@@ -152,4 +152,20 @@ export const MOVIES: Movie[] = [
     description: 'A high school chemistry teacher turned methamphetamine manufacturer.',
     imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=2128&auto=format&fit=crop',
   }
+];
+
+
+export const DEVS: Dev[] = [
+  {
+    href: "https://www.instagram.com/ritam_koley_10/",
+    label: "Ritam" 
+  },
+  {
+    href: "https://www.instagram.com/snehaaaa_2208/" ,
+    label: "Sneha" 
+  },
+  {
+    href: "https://www.instagram.com/nirvikjana/",
+    label: "Nirvik" 
+  },
 ];

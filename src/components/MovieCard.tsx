@@ -1,65 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
-import type { Movie, AIInsight } from '../types.ts';
-import { getMovieInsight } from '../services/geminiService';
+import type { Movie } from '../types.ts';
 
 // Assets
 import cardVideo from '/card_video.mp4';
-import cardImage from '/card_image.png';
-// Updated to .png as requested
 import cardVideoPoster from '/card_video_poster.png'; 
+import defaultCardImage from '/card_image.png';
 
 interface MovieCardProps {
   movie: Movie;
-  isActive: boolean; // Controls performance (video vs image)
+  isActive: boolean;
   onFlipBack?: () => void;
   onFlip?: () => void;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFlip }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ 
+  movie, 
+  isActive, 
+  onFlipBack, 
+  onFlip 
+}) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [insight, setInsight] = useState<AIInsight | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const prevFlippedRef = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Auto-close card if it becomes inactive (scrolled away)
+  // OPTIMIZATION 1: Check for mobile device
   useEffect(() => {
-    if (!isActive && isFlipped) {
-      setIsFlipped(false);
-    }
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive && isFlipped) setIsFlipped(false);
   }, [isActive, isFlipped]);
 
-  // Notify parent of flip state (to pause/resume carousel)
   useEffect(() => {
-    if (!prevFlippedRef.current && isFlipped && onFlip) {
-      onFlip();
-    }
-    if (prevFlippedRef.current && !isFlipped && onFlipBack) {
-      onFlipBack();
-    }
+    if (!prevFlippedRef.current && isFlipped && onFlip) onFlip();
+    if (prevFlippedRef.current && !isFlipped && onFlipBack) onFlipBack();
     prevFlippedRef.current = isFlipped;
   }, [isFlipped, onFlip, onFlipBack]);
 
-  const handleFlip = async (e: React.MouseEvent) => {
+  const handleFlip = (e: React.MouseEvent) => {
     e.stopPropagation();
-    
-    // Prevent flipping if the card isn't the active one
     if (!isActive) return;
-
-    const wasFlipped = isFlipped;
     setIsFlipped(!isFlipped);
-    
-    // Fetch AI insight only if flipping to back and data is missing
-    if (!wasFlipped && !insight && !isLoading) {
-      setIsLoading(true);
-      try {
-        const data = await getMovieInsight(movie);
-        setInsight(data);
-      } catch (error) {
-        console.error("Failed to fetch insight", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
   };
 
   return (
@@ -67,15 +49,16 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
       className="group perspective-1000 w-full aspect-[3/4] cursor-pointer"
       onClick={handleFlip}
     >
-      <div className={`relative w-full h-full duration-700 transition-all preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+      {/* OPTIMIZATION 2: will-change-transform hints the browser to use a dedicated layer */}
+      <div className={`relative w-full h-full duration-700 transition-all preserve-3d will-change-transform ${isFlipped ? 'rotate-y-180' : ''}`}>
         
         {/* ================= FRONT FACE ================= */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rounded-2xl overflow-hidden shadow-2xl bg-black">
+        {/* OPTIMIZATION 3: Removed heavy 'shadow-2xl' on mobile (added 'md:' prefix) */}
+        <div className="absolute inset-0 w-full h-full backface-hidden rounded-2xl overflow-hidden md:shadow-2xl bg-black">
           
-          {/* PERFORMANCE OPTIMIZATION: */}
-          {/* Only render the heavy <video> tag if this is the Active card. */}
-          {/* Otherwise, render the lightweight .png poster. */}
-          {isActive ? (
+          {/* LAYER 1: Background Video (Conditional) */}
+          {/* LOGIC: Only show video if Active AND NOT Mobile */}
+          {isActive && !isMobile ? (
             <video
               className="absolute inset-[5px] w-full h-full object-cover z-0 rounded-xl"
               autoPlay
@@ -84,9 +67,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
               playsInline
               preload="auto"
             >
-              <source src={cardVideo} type="video/mp4" />
+              <source src={movie.videoUrl || cardVideo} type="video/mp4" />
             </video>
           ) : (
+            // Fallback for Mobile OR Inactive state
             <div className="absolute inset-[5px] w-full h-full object-cover z-0 rounded-xl bg-zinc-800">
                <img 
                  src={cardVideoPoster} 
@@ -96,62 +80,29 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
             </div>
           )}
           
-          {/* Foreground Character Image */}
+          {/* LAYER 2: Character/Movie Image (Foreground) */}
           <div className="absolute top-[35px] bottom-[26px] left-[38px] right-[27px] overflow-hidden z-10">
             <img 
-              src={cardImage} 
+              src={movie.imageUrl || defaultCardImage} 
               alt={movie.title} 
               className="w-full h-full object-cover"
-              loading={isActive ? "eager" : "lazy"} // Priority loading for active card
+              loading={isActive ? "eager" : "lazy"} 
             />
           </div>
+
         </div>
 
         {/* ================= BACK FACE ================= */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-zinc-900 border border-white/10 p-6 flex flex-col justify-between shadow-2xl">
-          <div>
-            <div className="flex justify-between items-start mb-6">
-              <h3 className="text-xl font-bold text-white leading-tight">{movie.title}</h3>
-              <div className="text-xs bg-white/10 text-white/60 px-2 py-1 rounded">Details</div>
-            </div>
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-zinc-900 border border-white/10 p-8 flex flex-col justify-center items-center md:shadow-2xl text-center">
+          
+          <h3 className="text-xl font-bold text-white mb-4 tracking-wide">
+            {movie.title}
+          </h3>
+          
+          <p className="text-sm text-zinc-300 leading-relaxed overflow-y-auto max-h-[80%] pr-1 scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent">
+            {movie.description}
+          </p>
 
-            <p className="text-sm text-zinc-400 line-clamp-4 mb-6 leading-relaxed">
-              {movie.description}
-            </p>
-
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                {movie.genre.map(g => (
-                  <span key={g} className="text-[10px] uppercase tracking-wider bg-white/5 border border-white/10 text-white/70 px-2 py-1 rounded">
-                    {g}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-white/10 pt-4 mt-auto">
-            {isLoading ? (
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-xs text-indigo-400 font-medium">Summoning AI Insight...</span>
-              </div>
-            ) : insight ? (
-              <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">AI Recommendation</div>
-                <p className="text-xs text-white/80 italic mb-3 leading-snug">"{insight.reasonToWatch}"</p>
-                <div className="flex gap-2">
-                   {insight.vibe.split(',').map(v => (
-                     <span key={v} className="text-[9px] bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-1.5 py-0.5 rounded">
-                       {v.trim()}
-                     </span>
-                   ))}
-                </div>
-              </div>
-            ) : (
-              <div className="text-xs text-zinc-500 italic">Click to reveal deep insights</div>
-            )}
-          </div>
         </div>
 
       </div>

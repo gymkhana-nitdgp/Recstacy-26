@@ -15,10 +15,13 @@ export const generateCardTexture = async (
   name: string,
   role: string,
   email: string = "hello@example.com",
-  _gl: THREE.WebGLRenderer
+  renderer: THREE.WebGLRenderer // Renamed _gl to renderer for clarity
 ): Promise<THREE.CanvasTexture> => {
-  const width = 512;
-  const height = 800;
+  
+  // OPTIMIZATION 1: Reduced Resolution (256x400)
+  // This uses 75% less VRAM than 512x800 but looks identical on mobile screens.
+  const width = 256;
+  const height = 400;
   
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -29,31 +32,34 @@ export const generateCardTexture = async (
     throw new Error('Could not get 2d context');
   }
 
-  // 1. CLEAR BACKGROUND (Transparent or specific color)
-  // We use white so the text is readable, but you can make it transparent if you want the card material to show through
+  // 1. CLEAR BACKGROUND
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, width, height);
 
-  // 2. SMALLER PROFILE IMAGE (On Top)
+  // 2. PROFILE IMAGE
   try {
     const profileImg = await loadProfileImage(imageUrl);
     
-    // Config: Smaller image, centered top
-    const imgSize = 300; // Reduced from 400
-    const imgX = (width - imgSize) / 2; // Centered
-    const imgY = 60; // Margin from top
-    const radius = 25; // Rounded corners
+    // Config: Scaled down for 256px width
+    const imgSize = 150; // Was 300
+    const imgX = (width - imgSize) / 2;
+    const imgY = 30; // Was 60
+    const radius = 12; // Was 25
 
-    // Save context for clipping
     ctx.save();
     
-    // Create Rounded Square path
+    // Rounded Square path
     ctx.beginPath();
-    ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
+    if (ctx.roundRect) {
+        ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
+    } else {
+        // Fallback for older browsers
+        ctx.rect(imgX, imgY, imgSize, imgSize); 
+    }
     ctx.closePath();
     ctx.clip();
 
-    // Draw Image (Object Cover logic)
+    // Object Cover Logic
     const aspect = profileImg.width / profileImg.height;
     let drawW = imgSize;
     let drawH = imgSize;
@@ -71,53 +77,70 @@ export const generateCardTexture = async (
     ctx.drawImage(profileImg, imgX + offsetX, imgY + offsetY, drawW, drawH);
     ctx.restore();
 
-    // Draw Border
+    // Border
     ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 3; // Scaled down
     ctx.beginPath();
-    ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
+    if (ctx.roundRect) {
+        ctx.roundRect(imgX, imgY, imgSize, imgSize, radius);
+    } else {
+        ctx.rect(imgX, imgY, imgSize, imgSize);
+    }
     ctx.stroke();
 
   } catch (err) {
     // Fallback grey box
     ctx.fillStyle = '#cccccc';
-    ctx.fillRect((width - 300) / 2, 60, 300, 300);
+    ctx.fillRect((width - 150) / 2, 30, 150, 150);
   }
 
-  // 3. TEXT DETAILS
+  // 3. TEXT DETAILS (Fonts scaled down by 50%)
   // Name
   ctx.fillStyle = '#000000';
-  ctx.font = 'bold 50px Arial';
+  ctx.font = 'bold 24px Arial'; // Was 50px
   ctx.textAlign = 'center';
-  // Positioned below the image
-  ctx.fillText(name, width / 2, 450);
+  ctx.fillText(name, width / 2, 225); // Was 450
 
   // Role
   ctx.fillStyle = '#666666';
-  ctx.font = 'bold 35px Arial';
-  ctx.fillText(role.toUpperCase(), width / 2, 510);
+  ctx.font = 'bold 16px Arial'; // Was 35px
+  ctx.fillText(role.toUpperCase(), width / 2, 255); // Was 510
 
-  // 4. EMAIL PILL (Bottom)
-  const emailY = 650;
-  const pillW = 460;
-  const pillH = 70;
+  // 4. EMAIL PILL
+  const emailY = 325; // Was 650
+  const pillW = 230; // Was 460
+  const pillH = 35;  // Was 70
   const pillX = (width - pillW) / 2;
 
-  // Grey background for email
+  // Grey background
   ctx.fillStyle = '#f0f0f0';
   ctx.beginPath();
-  ctx.roundRect(pillX, emailY, pillW, pillH, 35);
+  if (ctx.roundRect) {
+      ctx.roundRect(pillX, emailY, pillW, pillH, 17);
+  } else {
+      ctx.rect(pillX, emailY, pillW, pillH);
+  }
   ctx.fill();
 
   // Email Text
   ctx.fillStyle = '#333333';
-  ctx.font = '26px Arial';
-  ctx.fillText(email, width / 2, emailY + 45);
+  ctx.font = '13px Arial'; // Was 26px
+  ctx.fillText(email, width / 2, emailY + 23);
 
   // 5. TEXTURE CREATION
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
-  // texture.flipY = false; // Usually handled in material, but safe to set here too
+  
+  // OPTIMIZATION 2: Anisotropy
+  // This keeps the text sharp even when the card is viewed at a steep angle.
+  texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  
+  // OPTIMIZATION 3: Linear Filter for smooth scaling
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  
+  // Mark for upload
+  texture.needsUpdate = true;
   
   return texture;
 };

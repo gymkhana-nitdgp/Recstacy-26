@@ -19,36 +19,35 @@ const ForwardLoader: React.FC<ForwardLoaderProps> = ({ onComplete, onMidway }) =
       }
     });
 
-    // 1. GPU SETUP: Set width to 50% immediately, but hide using scaleX: 0
-    // This allows the GPU to handle the expansion effortlessly.
+    // GPU SETUP
     tl.set(leftCurtainRef.current, { 
       width: "50%", 
       scaleX: 0, 
-      transformOrigin: "left center" // Expands from left
+      transformOrigin: "left center" 
     });
     tl.set(rightCurtainRef.current, { 
       width: "50%", 
       scaleX: 0, 
-      transformOrigin: "right center" // Expands from right
+      transformOrigin: "right center" 
     });
 
-    // 2. CLOSE CURTAINS (Animate Scale instead of Width)
+    // CLOSE CURTAINS
     tl.to([leftCurtainRef.current, rightCurtainRef.current], {
-      scaleX: 1, // Scales up to fill the space
+      scaleX: 1,
       duration: 0.8,
       ease: "power2.inOut",
-      force3D: true, // Forces Hardware Acceleration
+      force3D: true, 
     })
 
-    // 3. TRIGGER NAVIGATION
+    // TRIGGER NAVIGATION
     .call(() => {
       if (onMidway) onMidway();
     })
 
-    // 4. BUFFER
+    // BUFFER
     .to({}, { duration: 0.3 }) 
 
-    // 5. OPEN CURTAINS
+    // OPEN CURTAINS
     .to([leftCurtainRef.current, rightCurtainRef.current], {
       scaleX: 0,
       duration: 0.8,
@@ -65,15 +64,16 @@ const ForwardLoader: React.FC<ForwardLoaderProps> = ({ onComplete, onMidway }) =
     >
       <div 
         ref={leftCurtainRef}
-        className="h-full bg-cover bg-right bg-no-repeat relative shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-20 will-change-transform"
+        // OPTIMIZATION: Removed heavy shadow on mobile (added 'md:' prefix)
+        className="h-full bg-cover bg-right bg-no-repeat relative md:shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-20 will-change-transform"
         style={{ 
           backgroundImage: "url('/assets/curtains.png')",
-          // Width is fixed, we animate transform only
         }}
       />
       <div 
         ref={rightCurtainRef}
-        className="h-full bg-cover bg-left bg-no-repeat relative shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-20 will-change-transform"
+        // OPTIMIZATION: Removed heavy shadow on mobile (added 'md:' prefix)
+        className="h-full bg-cover bg-left bg-no-repeat relative md:shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-20 will-change-transform"
         style={{ 
           backgroundImage: "url('/assets/curtains.png')",
           marginLeft: 'auto' 
