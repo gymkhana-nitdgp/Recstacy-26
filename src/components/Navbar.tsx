@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { usePageTransition } from "../context/TransitionContext";
 import Menu from "./hamburger/Menu";
 
@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { startTransition } = usePageTransition();
 
