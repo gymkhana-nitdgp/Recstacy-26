@@ -1,8 +1,8 @@
 const navLinks: {name: string; path: string; isScroll: boolean}[] = [
-    { name: "HOME", path: "/", isScroll: false },
-    { name: "EVENTS", path: "/events", isScroll: false },
-    { name: "SPONSORS", path: "/sponsors", isScroll: false },
-    { name: "CONTACT", path: "/contact", isScroll: false },
+    // { name: "HOME", path: "/", isScroll: false },
+    // { name: "EVENTS", path: "/events", isScroll: false },
+    // { name: "SPONSORS", path: "/sponsors", isScroll: false },
+    // { name: "CONTACT", path: "/contact", isScroll: false },
   ];
   
   const NavMenus = ({handleNavClick}: {handleNavClick: (e: React.MouseEvent, path: string, isScrollLink: boolean)=>void}) => {  
