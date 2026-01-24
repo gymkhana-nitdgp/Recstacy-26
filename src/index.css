@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 1. Main Title Font */
+@font-face {
+  font-family: 'Mosca Laroke';
+  src: url('./fonts/Mosca Laroke.ttf') format('truetype');
+}
+  
+  /* Create the utility class */
+  .font-mosca {
+    font-family: 'Mosca Laroke', sans-serif;
+  }
+    .font-mosca-laroke {
+    font-family: 'Mosca Laroke', serif;
+  }
+  
+  /* Custom golden glow effects */
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  }
+  .text-glow-gold {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+  }
+
+/* 2. Timestamp Font */
+@font-face {
+  font-family: 'Man of Space';
+  src: url('./fonts/Man of Space.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Riot block';
+  src: url('./fonts/Riot block.otf') format('truetype');
+}
+/* ... previous fonts ... */
+
+@font-face {
+  font-family: 'cinzel';
+  /* Removed space before Cinzel, changed format to opentype */
+  src: url('./fonts/cinzel.regular.otf') format('opentype'); 
+}
+
+@font-face {
+  font-family: 'jmh-typewriter';
+  /* Removed space before JMH, changed format to opentype */
+  src: url('./fonts/jmh-typewriter.regular.otf') format('opentype');
+}
+
+/* ... rest of css ... */
+/* --- LAYOUT SHIFT FIX --- */
+/* This reserves space for the scrollbar permanently so the center alignment 
+   doesn't jump when the loader (no scroll) switches to homepage (scroll). */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* --- CUSTOM DARK SCROLLBAR --- */
+/* Makes the scrollbar blend in with your black background */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333; 
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555; 
+}
+
+/* 3. Neon Glow (For Main Title Only) */
+@layer utilities {
+  .text-neon {
+    text-shadow: 
+      0 0 5px rgba(255, 255, 255, 0.8),
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(193, 53, 132, 0.4),
+      0 0 30px rgba(24, 119, 242, 0.4);
+  }
+}
+
+/* Global Body Styles */
+body {
+  background-color: black;
+  color: white;
+  margin: 0;
+  /* Ensuring smooth font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* --- 3D CINEMATIC UTILITIES --- */
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+@keyframes golden-pulse {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 191, 0, 0.3)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 15px rgba(255, 191, 0, 0.7)); transform: scale(1.05); }
+}
+
+.animate-golden-glow {
+  animation: golden-pulse 3s infinite ease-in-out;
+}
