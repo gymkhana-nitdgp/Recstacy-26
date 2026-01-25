@@ -133,7 +133,7 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
       if (forceClosed) {
         return [x, y + 0.3, 0];
       }
-      return [x, y -0.2, 0];
+      return [x, y + 0.6, 0];
     }
   };
 

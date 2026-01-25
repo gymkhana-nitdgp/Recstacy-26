@@ -43,7 +43,7 @@ const Card: React.FC<CardInter> = ({ name, role, img, instaId }) => {
             </div>
           </div>
           <a href={`https://www.instagram.com/${instaId}/`} target="_blank">
-            <img src={INSTA} alt="instagram logo" className={`${isLg? "w-8 h-8": isMd? "w-6 h-6" :"w-4 h-4"} rounded-full`} />
+            <img src={INSTA} alt="instagram logo" className={`${isLg? "w-8 h-8": isMd? "w-6 h-6" :"w-5 h-5"} rounded-full`} />
           </a>
         </div>
       </div>

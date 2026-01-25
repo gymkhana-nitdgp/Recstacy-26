@@ -16,7 +16,7 @@ const EventsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen text-white overflow-hidden selection:bg-indigo-500/30 bg-black">
+    <div className="relative h-screen md:min-h-screen text-white overflow-hidden selection:bg-indigo-500/30 bg-black">
       
       {/* Background Video Wrapper - Optimized Layer */}
       <div className="fixed inset-0 w-full h-full -z-10 overflow-hidden will-change-transform">
