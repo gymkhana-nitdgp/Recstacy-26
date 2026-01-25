@@ -5,7 +5,7 @@ import Hero from "../sections/Hero";
 import InitialLoader from "../components/InitialLoader";
 import { usePageTransition } from "../context/TransitionContext";
 import { playGlobalAudio } from "../utils/audio";
-import Footer from "../components/Footer"; // Ensure this import exists
+
 
 const AboutPage = React.lazy(() => import("./AboutPage"));
 const TheaterStage = React.lazy(() =>
