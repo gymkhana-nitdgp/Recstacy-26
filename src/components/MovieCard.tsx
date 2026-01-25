@@ -90,7 +90,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
           <h2 className="text-xs">Venue: {movie.venue}</h2>
           {movie.endDate? <h2 className="text-xs">Date: {formatDateRange(movie.date, movie.endDate)}</h2> : <h2 className="text-sm">Date: {formatDisplayDate(movie.date)}</h2>}
           {movie.date.getHours()!==0 && <h2 className="text-xs mb-2">Time: {get12Hour(movie.date)}</h2>}
-          {movie.registerLink!==undefined  && <a href={movie.registerLink} target="_blank" onClick={(e) => e.stopPropagation()} className="text-center p-1 my-2 bg-blue-500 rounded-md z-[100] text-sm md:text-lg font-semibold" >Double Click to Register</a>}
+          {movie.registerLink!==undefined  && <a href={movie.registerLink} target="_blank" onClick={(e) => e.stopPropagation()} className="text-center p-1 my-2 bg-[#ffbf00] text-black rounded-md z-[100] text-sm md:text-lg font-semibold" >Double Click to Register</a>}
 
           <p 
             className="text-[8px] md:text-xs mt-2 text-zinc-300 leading-relaxed overflow-y-auto max-h-[80%] pr-1 scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"
