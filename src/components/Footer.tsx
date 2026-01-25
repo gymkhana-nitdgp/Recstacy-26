@@ -1,3 +1,5 @@
+import { DEVS } from "../constants";
+
 const Footer = () => {
   return (
     // OPTIMIZATION:
@@ -6,33 +8,20 @@ const Footer = () => {
     <div className="relative w-full z-50 bg-black/95 md:bg-black/80 md:backdrop-blur-md py-2 px-4 text-center border-t border-gray-800 mt-auto">
       <p className="text-gray-300 text-sm md:text-base">
         Developed by:{" "}
-        
-        <a
-          href="https://www.instagram.com/snehaaaa_2208/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#FFEBD0] font-semibold hover:opacity-80 transition-opacity"
-        >
-          Sneha
-        </a>{" "}
-        ,{" "}
-        <a
-          href="https://www.instagram.com/nirvikjana/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#FFEBD0] font-semibold hover:opacity-80 transition-opacity"
-        >
-          Nirvik
-        </a>{" "}
-        and{" "}
-        <a
-          href="https://www.instagram.com/imchitta07/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#FFEBD0] font-semibold hover:opacity-80 transition-opacity"
-        >
-          Chitta
-        </a>
+        {DEVS.map((dev, idx) => (
+          <span key={dev.label}>
+            {idx!==0 && (idx === DEVS.length - 1 ? " and " : " , ")}
+
+            <a
+              href={`https://www.instagram.com/${dev.href}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#FFEBD0] font-semibold hover:opacity-80 transition-opacity"
+            >
+              {dev.label}
+            </a>
+          </span>
+        ))}
       </p>
     </div>
   );

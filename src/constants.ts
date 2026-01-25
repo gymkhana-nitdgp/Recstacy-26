@@ -163,21 +163,21 @@ export const MOVIES: Movie[] = [
 ];
 
 
-export const DEVS: Dev[] = [
+export const DEVS: Array<Dev> = [
   {
-    href: "https://www.instagram.com/ritam_koley_10/",
+    href: "ritam_koley_10",
     label: "Ritam" 
   },
   {
-    href: "https://www.instagram.com/snehaaaa_2208/" ,
+    href: "snehaaaa_2208" ,
     label: "Sneha" 
   },
   {
-    href: "https://www.instagram.com/nirvikjana/",
+    href: "nirvikjana",
     label: "Nirvik" 
   },
   {
-    href: "https://www.instagram.com/iamchitta07/",
+    href: "imchitta07",
     label: "Chitta" 
   },
 ];
