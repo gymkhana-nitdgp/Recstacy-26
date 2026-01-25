@@ -4,8 +4,6 @@ import { formatDisplayDate, formatDateRange, get12Hour } from "../utils";
 
 // Assets
 import cardVideo from "/card_video.mp4";
-import cardVideoPoster from "/card_video_poster.png";
-import defaultCardImage from "/card_image.png";
 
 interface MovieCardProps {
   movie: Poster;
@@ -17,12 +15,12 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFlip }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const prevFlippedRef = useRef(false);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
 
-  // OPTIMIZATION 1: Check for mobile device
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  // // OPTIMIZATION 1: Check for mobile device
+  // useEffect(() => {
+  //   setIsMobile(window.innerWidth < 768);
+  // }, []);
 
   useEffect(() => {
     if (!isActive && isFlipped) setIsFlipped(false);

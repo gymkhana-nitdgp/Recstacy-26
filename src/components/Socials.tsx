@@ -72,10 +72,3 @@ export const DesktopLanyards: React.FC<SocialProps> = ({ play }) => {
     </div>
   );
 };
-
-export const MobileSocialDock: React.FC = () => {
-  // Kept empty as per your code
-  return (
-    <div className="flex absolute bottom-6 left-0 right-0 z-50 justify-center gap-6 pointer-events-auto"></div>
-  );
-};
