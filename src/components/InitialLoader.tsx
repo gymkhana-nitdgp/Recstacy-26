@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
-import gsap from 'gsap';
-import { ASSETS } from '../constants'; 
-import { playGlobalAudio } from '../utils/audio';
+import React, { useRef, useEffect, useState } from "react";
+import gsap from "gsap";
+import { ASSETS } from "../constants";
+import { playGlobalAudio } from "../utils/audio";
 
 interface Props {
   onComplete: () => void;
@@ -25,26 +25,29 @@ const InitialLoader: React.FC<Props> = ({ onComplete }) => {
 
   const handleVideoEnd = () => {
     if (videoRef.current) {
-        videoRef.current.pause();
-        setShowEnterButton(true);
+      videoRef.current.pause();
+      setShowEnterButton(true);
     }
   };
 
   const handleEnterClick = () => {
     playGlobalAudio();
-    
+
     gsap.to(containerRef.current, {
       opacity: 0,
       duration: 1,
       ease: "power2.inOut",
-      onComplete: onComplete
+      onComplete: onComplete,
     });
   };
 
   if (!videoSrc) return <div className="fixed inset-0 bg-black z-[100]" />;
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center pointer-events-auto overflow-hidden">
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center pointer-events-auto overflow-hidden"
+    >
       <div className="absolute inset-0 w-full h-full">
         <video
           ref={videoRef}

@@ -179,7 +179,7 @@ const SponsorsPage: React.FC = () => {
             className="absolute z-30 flex flex-col items-center justify-center pointer-events-none w-full px-4"
             style={{ transformOrigin: "center center", top: "50%" }}
           >
-            <h2
+            <h2 
               className="font-mosca text-[#FFEBD0] text-6xl sm:text-6xl leading-none tracking-tight uppercase select-none text-center whitespace-nowrap mt-[50]"
               style={{
                 textShadow: "0 0 50px rgba(255, 165, 0, 0.4)",

@@ -50,11 +50,11 @@ const EventsPage: React.FC = () => {
       </div>
 
       {/* Header: Events */}
-      <header className="relative z-10 pt-16 pb-5 px-6">
+      <header className="relative z-10 pt-20 pb-5 px-6">
         <div className="flex flex-col items-center text-center">
         {/* OPTIMIZATION 3: Cheaper Text Shadow on Mobile */}
         <h1 
-            className="font-mosca text-4xl sm:text-6xl font-black tracking-[0.2em] uppercase text-white"
+            className="font-mosca text-[#FFEBD0] text-4xl md:text-7xl font-black tracking-[0.2em] uppercase text-center"
             style={{
                 textShadow: isMobile ? '0 2px 4px rgba(0,0,0,0.5)' : '0 10px 20px rgba(0,0,0,0.5)'
             }}
