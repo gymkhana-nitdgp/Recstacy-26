@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import MovieCarousel from '../components/MovieCarousel';
-import { MOVIES } from './../constants';
 import bg from "/bg.mp4";
 
 const EventsPage: React.FC = () => {
   // OPTIMIZATION 1: Mobile Detection
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setIsMobile(window.innerWidth < 768);
 
     // Optional: Add resize listener if you want it to be responsive on resize
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -70,7 +68,7 @@ const EventsPage: React.FC = () => {
       {/* Main Content: Carousel */}
       <main className="relative z-10 w-full flex flex-col justify-center min-h-[30vh]">
         <section className="-mt-[10px] sm:mt-0">
-          <MovieCarousel movies={MOVIES} />
+          <MovieCarousel />
         </section>
       </main>
 

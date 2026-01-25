@@ -5,7 +5,7 @@ import RenderableModel from "./RenderableModel";
 
 const Modal = ({ modalRef, setIsOpen, handleNavClick }: ModalFace) => {
   const { isMd, isLg } = useBreakpoints();
-  const sz: number = isLg ? 6 : isMd ? 4 : 3;
+  const sz: number = isLg ? 6 : isMd ? 5 : 4;
   return (
     <div
       ref={modalRef}
@@ -13,7 +13,7 @@ const Modal = ({ modalRef, setIsOpen, handleNavClick }: ModalFace) => {
     >
       <button
         onClick={() => setIsOpen(false)}
-        className={`${isMd? "hover:rotate-90 transition-transform duration-300": ""} absolute top-8 right-8 text-white z-10`}
+        className={`${isMd? "hover:rotate-90 transition-transform duration-300": ""} absolute top-6 right-6 md:top-8 md:right-8 text-white z-10`}
       >
         <X size={isMd? 48 : 38} />
       </button>

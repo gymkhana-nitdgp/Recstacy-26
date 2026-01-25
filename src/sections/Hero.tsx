@@ -221,13 +221,13 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
         <div ref={overlayRef} className="absolute inset-0 bg-black opacity-0" />
       </div>
 
-      <div className="ui-layer absolute inset-0 w-full h-full z-[60] pointer-events-none">
+      <div className="ui-layer absolute inset-0 w-full h-full z-[80] pointer-events-none">
         <DesktopLanyards play={startAnimation} />
-        <MobileSocialDock />
+        {/* <MobileSocialDock /> */}
         <Countdown />
       </div>
 
-      <div className="scene-wrapper relative flex items-center justify-center z-[70] -mt-8 md:-mt-16 perspective-[1000px]">
+      <div className="scene-wrapper relative flex items-center justify-center z-[70] -mt-3 md:-mt-16 perspective-[1000px]">
         <h1
           ref={textRef}
           className="font-black text-[#FFEBD0] text-[15vw] lg:text-[8vw] tracking-[0.1em] lg:tracking-[0.2em] select-none text-center 

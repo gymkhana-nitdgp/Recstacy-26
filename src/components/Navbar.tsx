@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
       </div>
 
       <div 
-        className="md:hidden absolute top-6 left-6 pointer-events-auto z-[70]"
+        className="md:hidden absolute top-5 left-5 pointer-events-auto z-[70]"
         style={{ touchAction: 'none' }} 
       >
         <Menu handleNavClick={handleNavClick} desktop={false} />

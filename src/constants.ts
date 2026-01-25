@@ -7,163 +7,104 @@ const P6 = "/assets/people/person6.png";
 const P7 = "/assets/people/person7.jpeg";
 const P8 = "/assets/people/person8.png";
 
-import type { Movie, Dev, CardInter } from './types';
+const promNight = "/posters/LC_Prom.png";
+const darpan = "/posters/GoonjPoster.png";
+const kalakriti = "/posters/kalakriti.jpg";
+const stellar = "/posters/Stellar.png";
+const interCollege = "/posters/INTER_COLLEGE.png";
+const lastLap = "/posters/LASTLAP.png";
+const valo = "/posters/valorant.jpeg";
+const goneViral = "/posters/Gone_Viral_Quiz.jpg";
+const facePainting = "/posters/FACE_PAINTING_poster.png";
 
-export const MOVIES: Movie[] = [
+
+import type { Poster, Dev, CardInter } from './types';
+
+export const POSTERS: Poster[] = [
   {
     id: '1',
-    title: 'The Last of Us',
-    year: '2023',
-    duration: '1 Season',
-    rating: 8.8,
-    genre: ['Drama', 'Action'],
-    description: 'After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl.',
-    imageUrl: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop',
+    title: 'Prom Night',
+    venue: 'Lords Arena',
+    date: new Date(2026, 0, 29, 0, 0, 0, 0),
+    description: "There’s a special kind of magic in nights like these, where getting dressed up feels like stepping into a Disney story. A story where ordinary moments start to feel like memories in the making.\nAnd somewhere in that quiet, you hear the rhythm of heels against the floor and see a boy waiting with hands tucked in his pockets, hoping she’s walking toward him.\nHosted by The Literary Circle and Students Gymkhana, the night promises warmth, tenderness, and a spark meant to be remembered. Come as your brightest self, bring your dearest, and let the night turn into a memory.",
+    imageUrl: promNight,
+    registerLink: "https://forms.gle/BziJarmZLDjYvHYn7"
   },
   {
     id: '2',
-    title: 'Ted Lasso',
-    year: '2020',
-    duration: '3 Seasons',
-    rating: 8.8,
-    genre: ['Comedy', 'Sports'],
-    description: 'American college football coach Ted Lasso heads to London to manage a struggling football team.',
-    imageUrl: 'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=2070&auto=format&fit=crop',
+    title: 'गूँज',
+    venue: 'नए ऑडिटोरियम',
+    date: new Date(2026, 0, 31, 15, 0, 0, 0),
+    description: "ख़ामोशी की तह से जब अल्फ़ाज़ निकलते हैं,\nटूटे दिल भी मुकम्मल से लगते हैं,\nये गुमनाम लफ़्ज़ों की गूँज भी अजीब है जहाँ,\nसोए हुए शब्द भी मुस्कुराए से लगते हैं।\n\nगूँज सिर्फ़ एक कार्यक्रम नहीं, बल्कि शब्दों, भावनाओं और संवेदनाओं की गूँज है। इस मंच पर आमंत्रित किए जाते हैं ऐसे विशिष्ट कलाकार, जो अपनी रचनाओं, कविताओं और अभिव्यक्तियों से पूरे माहौल को जीवंत कर देते हैं। उनकी हर पंक्ति दिल को छूती है, हर विचार मन को आंदोलित करता है और हर प्रस्तुति श्रोताओं को आनंद और प्रेरणा से भर देती है।\nगूँज में शब्द बोलते हैं, भावनाएँ बहती हैं और कला अपने शिखर पर पहुँचती है।\nआइए, इस अनोखे अनुभव का हिस्सा बनें और महसूस करें उन आवाज़ों की गूँज, जो देर तक आपके दिल में बनी रहेगी।",
+    imageUrl: darpan,
   },
   {
     id: '3',
-    title: 'Interstellar',
-    year: '2014',
-    duration: '2h 49m',
-    rating: 8.7,
-    genre: ['Sci-Fi', 'Drama'],
-    description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
-    imageUrl: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=2072&auto=format&fit=crop',
+    title: 'Kalakriti',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 30, 0, 0, 0, 0),
+    endDate: new Date(2026, 1, 1, 0, 0, 0, 0),
+    description: "The Official Art and Photography exhibition of NIT DURGAPUR \"We don’t just capture faces, We capture the energy, the chaos, and the soul. Let the lights fade, but let the memories glow.\" RECSTACY is back, and the vibe is unmatched! Team Strokes invites you to freeze time at our exclusive Photobooth. Whether you're here for the music, the art, or the memories, make sure you step into the frame and take a piece of the fest home with you.\n\n Gather your squad, pick a prop, and let us immortalize your RECstacy moments.",
+    imageUrl: kalakriti,
   },
   {
     id: '4',
-    title: 'Inception',
-    year: '2010',
-    duration: '2h 28m',
-    rating: 8.8,
-    genre: ['Action', 'Sci-Fi'],
-    description: 'A thief who steals corporate secrets through the use of dream-sharing technology.',
-    imageUrl: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2070&auto=format&fit=crop',
+    title: 'Stellar Scavenger',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 30, 0, 0, 0, 0),
+    description: "Step into a universe where every clue is a prophecy and every checkpoint is a new realm. Inspired by cosmic odysseys, space epics, and survival games, Stellar Scavengers is a high-speed campus-wide treasure hunt where wit, teamwork, and instinct decide your fate.\n\n Decode riddles. Navigate hidden stations. Beat the clock. Race through 9 celestial checkpoints to reach the final trial of 12 intense task zones.\n\nOnly the fastest minds survive the cosmos.\n\nSuit up scavengers. The galaxy is yours.",
+    imageUrl: stellar,
   },
   {
     id: '5',
-    title: 'Dune: Part Two',
-    year: '2024',
-    duration: '2h 46m',
-    rating: 8.6,
-    genre: ['Action', 'Adventure'],
-    description: 'Paul Atreides unites with Chani and the Fremen while on a warpath of revenge.',
-    imageUrl: 'https://images.unsplash.com/photo-1614728263952-84ea206f99b6?q=80&w=2066&auto=format&fit=crop',
+    title: 'Face Painting',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 30, 0, 0, 0, 0),
+    endDate: new Date(2026, 1, 1, 0, 0, 0, 0),
+    description: "Step into a universe where every clue is a prophecy and every checkpoint is a new realm. Inspired by cosmic odysseys, space epics, and survival games, Stellar Scavengers is a high-speed campus-wide treasure hunt where wit, teamwork, and instinct decide your fate.\n\n Decode riddles. Navigate hidden stations. Beat the clock. Race through 9 celestial checkpoints to reach the final trial of 12 intense task zones.\n\nOnly the fastest minds survive the cosmos.\n\nSuit up scavengers. The galaxy is yours.",
+    imageUrl: facePainting,
   },
   {
     id: '6',
-    title: 'Blade Runner 2049',
-    year: '2017',
-    duration: '2h 44m',
-    rating: 8.0,
-    genre: ['Sci-Fi', 'Thriller'],
-    description: 'A young blade runner\'s discovery of a long-buried secret leads him to track down Deckard.',
-    imageUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop',
+    title: 'Inter - College Mela Quiz',
+    venue: 'SAC Auditorium',
+    date: new Date(2026, 1, 1, 10, 0, 0, 0),
+    description: "Do you find yourself dissecting the hidden metaphors in a classic novel or identifying a film director by a single camera angle? If the intersection of creative genius and cultural history is where you thrive, your moment has arrived.\n\nThe Students’ Gymkhana, NIT Durgapur, in collaboration with QuizInc, the official knowledge club of NIT Durgapur, proudly presents the INTER - COLLEGE MELA QUIZ at Recstacy 2026. This isn't just a competition; it’s a high-octane celebration of media, entertainment, literature, and arts. Whether you are a cinephile, a bookworm, or a pop-culture enthusiast, the stage is set for you to battle it out the ultimate glory for your college.\n\nBring your team, navigate the twists of our \"Infinite Pounce,\" and claim your crown in this ultimate inter-college cultural showdown at Recstacy 2026.",
+    imageUrl: interCollege,
   },
   {
     id: '7',
-    title: 'Arrival',
-    year: '2016',
-    duration: '1h 56m',
-    rating: 7.9,
-    genre: ['Sci-Fi', 'Mystery'],
-    description: 'A linguist works with the military to communicate with alien lifecrafts.',
-    imageUrl: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2072&auto=format&fit=crop',
+    title: 'The Last Lap',
+    venue: 'NAB 303',
+    date: new Date(2026, 0, 30, 14, 0, 0, 0),
+    description: "From stardust to scoreboards, the journey from possibility to peak performance comes alive through sport.\n\nPresented by Students' Gymkhana, in collaboration with QuizInc, the World-Cup Quiz dives into the global tournaments of 2026, where nations collide and legends emerge—echoing Messi at the Maracanã, Kohli under lights at Eden Gardens, and Serena on centre court.\n\nAcross pitches, tracks, and courts, questions unfold through iconic stages—Azteca’s World Cup aura, Wankhede Stadium’s cricketing frenzy, and the Wagener Stadium’s hockey intensity—where rivalries peak and glory is decided.\n\nStep into a universe where world cups are the ultimate test. Feel the build-up, chase the moments, and see if your knowledge can rise when champions are made.",
+    imageUrl: lastLap,
+    registerLink: "https://forms.gle/5h6b5p1i2pr8wP7Z7"
   },
   {
     id: '8',
-    title: 'The Batman',
-    year: '2022',
-    duration: '2h 56m',
-    rating: 7.8,
-    genre: ['Action', 'Crime'],
-    description: 'Batman ventures into Gotham City\'s underworld when a sadistic killer leaves a trail of cryptic clues.',
-    imageUrl: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=2037&auto=format&fit=crop',
+    title: 'Gone Viral Quiz',
+    venue: 'NAB 303',
+    date: new Date(2026, 0, 31, 14, 0, 0, 0),
+    description: "Think you’re the ultimate trendsetter? Can you quote every viral reel and identify a meme from a single pixel?\n\nStudents' Gymkhana in collaboration with QuizInc is bringing the chaos of the internet to the stage. Presenting the Gone Viral Quiz at Recstacy!\n\nFrom legendary vines to record-breaking trends, we are testing your \"Internet IQ.\" Whether you are a pop-culture stan or a meme connoisseur, this is your moment to shine amidst the Recstacy hype.\n\nDon’t just scroll through the feed, own it.",
+    imageUrl: goneViral,
+    registerLink: "https://forms.gle/hKzrtkhaxywqh9tp7"
   },
   {
     id: '9',
-    title: 'Oppenheimer',
-    year: '2023',
-    duration: '3h',
-    rating: 8.4,
-    genre: ['Biography', 'Drama'],
-    description: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.',
-    imageUrl: 'https://images.unsplash.com/photo-1451187530230-b237ee60ef6e?q=80&w=2072&auto=format&fit=crop',
+    title: 'Valorant Campus Cup',
+    venue: 'NIT Durgapur',
+    date: new Date(2026, 0, 30, 10, 0, 0, 0),
+    endDate: new Date(2026, 0, 31, 0, 0, 0, 0),
+    description: "Jio Games × NIT Durgapur × Recstacy '26 Gear up for high-octane competition as Recstacy 2026 brings you the Valorant Campus Cup, in collaboration with JioGames, where precision, strategy, and teamwork collide in an arena built for champions. Watch elite squads battle through intense match-ups, electrifying clutches, and tactical masterclasses in one of the most anticipated esports spectacles of the fest.",
+    imageUrl: valo,
+    registerLink: "https://drive.google.com/file/d/14O-leKq4EMGMi8DDiMhikl4qkGpmbNz1/view?usp=drivesdk"
   },
-  {
-    id: '10',
-    title: 'Succession',
-    year: '2018-2023',
-    duration: '4 Seasons',
-    rating: 8.9,
-    genre: ['Drama'],
-    description: 'The Roy family is known for controlling the biggest media and entertainment company in the world.',
-    imageUrl: 'https://images.unsplash.com/photo-1533107862482-0e6974b06ec4?q=80&w=2070&auto=format&fit=crop',
-  },
-  {
-    id: '11',
-    title: 'The Mandalorian',
-    year: '2019',
-    duration: '3 Seasons',
-    rating: 8.7,
-    genre: ['Action', 'Sci-Fi'],
-    description: 'The travels of a lone bounty hunter in the outer reaches of the galaxy.',
-    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=2025&auto=format&fit=crop',
-  },
-  {
-    id: '12',
-    title: 'Stranger Things',
-    year: '2016-2022',
-    duration: '4 Seasons',
-    rating: 8.7,
-    genre: ['Horror', 'Sci-Fi'],
-    description: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments.',
-    imageUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop',
-  },
-  {
-    id: '13',
-    title: 'The Crown',
-    year: '2016-2023',
-    duration: '6 Seasons',
-    rating: 8.6,
-    genre: ['Drama', 'History'],
-    description: 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign.',
-    imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0d38d6e9f0a?q=80&w=1974&auto=format&fit=crop',
-  },
-  {
-    id: '14',
-    title: 'The Matrix',
-    year: '1999',
-    duration: '2h 16m',
-    rating: 8.7,
-    genre: ['Action', 'Sci-Fi'],
-    description: 'A computer hacker learns from mysterious rebels about the true nature of his reality.',
-    imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop',
-  },
-  {
-    id: '15',
-    title: 'Breaking Bad',
-    year: '2008-2013',
-    duration: '5 Seasons',
-    rating: 9.5,
-    genre: ['Crime', 'Drama'],
-    description: 'A high school chemistry teacher turned methamphetamine manufacturer.',
-    imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=2128&auto=format&fit=crop',
-  }
+  
 ];
 
 
-export const DEVS: Array<Dev> = [
+export const DEVS: Dev[] = [
   {
     href: "ritam_koley_10",
     label: "Ritam" 
