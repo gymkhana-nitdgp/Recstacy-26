@@ -5,6 +5,7 @@ import Hero from "../sections/Hero";
 import InitialLoader from "../components/InitialLoader";
 import { usePageTransition } from "../context/TransitionContext";
 import { playGlobalAudio } from "../utils/audio";
+import Footer from "../components/Footer"; // Ensure this import exists
 
 const AboutPage = React.lazy(() => import("./AboutPage"));
 const TheaterStage = React.lazy(() =>
@@ -36,7 +37,6 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (currentLoader === "forward" && !isTransitioning) {
-      // Using 'forward' for SplineGateway
       window.scrollTo(0, 0);
       setTimeout(() => {
         window.scrollTo(0, 0);
@@ -71,9 +71,6 @@ const HomePage: React.FC = () => {
         <InitialLoader onComplete={handleInitialComplete} />
       )}
 
-      {/* Using ForwardLoader (SplineGateway) */}
-      {/* <SplineGateway /> */}
-
       <main className="bg-black min-h-screen flex flex-col gap-0 relative">
         <Hero startAnimation={animationsStarted} />
 
@@ -81,10 +78,12 @@ const HomePage: React.FC = () => {
           <Suspense fallback={<div className="h-screen bg-black" />}>
             <AboutPage />
 
-            {/* FIX: Removed mt-[8px] to reduce gap */}
-            <div className="w-full">
+            {/* The Stage handles the 300vh scroll animation */}
+            <div className="w-full relative">
               <TheaterStage forceClosed={false} />
             </div>
+
+            {/* Footer placed outside/after TheaterStage so it appears only after curtains close */}
           </Suspense>
         )}
       </main>

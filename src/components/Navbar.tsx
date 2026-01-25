@@ -41,11 +41,12 @@ const Navbar: React.FC = () => {
       className="fixed top-0 left-0 w-full z-[60] px-6 py-6 pointer-events-none font-[family-name:var(--font-man-of-space)]"
     >
       <div className="hidden md:flex pointer-events-auto absolute top-8 left-12 gap-8 items-center z-[60]">
-        <Menu handleNavClick={handleNavClick} desktop  />
+        <Menu handleNavClick={handleNavClick} desktop />
       </div>
 
+      {/* MOBILE VIEW ADJUSTMENT */}
       <div 
-        className="md:hidden absolute top-5 left-5 pointer-events-auto z-[70]"
+        className="md:hidden absolute top-0 left-0 p-10 pointer-events-auto z-[70]" // Added p-5 to increase hit area container
         style={{ touchAction: 'none' }} 
       >
         <Menu handleNavClick={handleNavClick} desktop={false} />
