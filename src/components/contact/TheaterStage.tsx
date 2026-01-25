@@ -11,15 +11,11 @@ interface TheaterStageProps {
   forceClosed?: boolean;
 }
 
-/**
- * Maps scroll progress to animation progress.
- * Adjusted to 0.85 to make the closing feel "a little slower" on a 200vh track.
- */
 const getProgress = (raw: number, forceClosed: boolean) => {
   if (forceClosed) return 1;
-  // Stretching the limit to 0.85 makes the user scroll more to finish the animation
-  const limit = 0.85; 
-  const p = raw / limit; 
+  // Lowered limit slightly to ensure animation definitely finishes on shorter mobile scroll
+  const limit = 0.9; 
+  const p = raw / limit;
   return Math.max(0, Math.min(1, p));
 };
 
@@ -85,15 +81,17 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
     offset: ["start end", "end end"],
   });
 
-  // Tuning the spring for a "weighted" feel (slower response)
-  const smoothProgress = useSpring(scrollYProgress, { 
-    stiffness: 15, // Reduced stiffness for slower, more natural movement
-    damping: 35, 
-    mass: 1 
+  /** * FIX 1: Tighter Spring Physics 
+   * Stiffness 120 (was 15) makes it respond immediately to the finger.
+   * Damping 20 prevents it from wobbling but keeps it smooth.
+   */
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120, 
+    damping: 20, 
+    mass: 0.5 
   });
 
-  // The limit is now 0.85 for both mobile and desktop to ensure compatibility with 200vh
-  const scrollLimit = 0.85;
+  const scrollLimit = 0.9;
   const leftXTransform = useTransform(smoothProgress, [0, scrollLimit], ["-100%", "0%"]);
   const rightXTransform = useTransform(smoothProgress, [0, scrollLimit], ["100%", "0%"]);
   const titleOpacityTransform = useTransform(smoothProgress, [scrollLimit * 0.8, scrollLimit], [0, 1]);
@@ -120,12 +118,20 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
     }
   };
 
+  /**
+   * FIX 2: Reduced Mobile Scroll Height
+   * Changed h-[200vh] to h-[140vh] on mobile.
+   * This reduces the physical distance the user must scroll.
+   */
+  const containerHeight = forceClosed 
+    ? "h-screen" 
+    : "h-[140vh] md:h-[200vh]"; 
+
   return (
     <>
-      {/* Locked to 200vh for a tight but smooth experience */}
       <div 
         ref={containerRef} 
-        className={`relative bg-black w-full -mt-1 ${forceClosed ? "h-screen" : "h-[200vh]"}`}
+        className={`relative bg-black w-full -mt-1 ${containerHeight}`}
       >
         <div className="sticky top-0 w-full h-screen overflow-hidden">
           
@@ -134,11 +140,13 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
 
           <motion.div 
             className="absolute inset-0 z-40" 
-            style={{ touchAction: "none" }}
+            // FIX 3: Allow Vertical Pan
+            // 'none' blocks scrolling. 'pan-y' allows the browser to handle vertical scrolling naturally.
+            style={{ touchAction: "pan-y" }}
           >
             <Canvas
               camera={{ position: [0, 0, 18], fov: isMobile ? 35 : 20 }}
-              dpr={[1, 1.5]}
+              dpr={[1, 1.5]} // Keep DPR reasonable for mobile performance
               gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
               style={{ width: "100%", height: "100%" }}
             >
