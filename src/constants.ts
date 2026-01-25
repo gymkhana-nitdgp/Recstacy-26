@@ -16,6 +16,7 @@ const lastLap = "/posters/LASTLAP.png";
 const valo = "/posters/valorant.jpeg";
 const goneViral = "/posters/Gone_Viral_Quiz.jpg";
 const facePainting = "/posters/FACE_PAINTING_poster.png";
+const latent = "/posters/latent.jpeg";
 
 
 import type { Poster, Dev, CardInter } from './types';
@@ -92,6 +93,14 @@ export const POSTERS: Poster[] = [
   },
   {
     id: '9',
+    title: "NIT's Got Latent",
+    venue: 'DM Sen Auditorium',
+    date: new Date(2026, 0, 31, 0, 0, 0, 0),
+    description: "Students' Gymkhana Presents NIT's Got Latent\n\nNIT's Got Latent is not just a stage-it's a feeling. It's where instinct meets intention, where raw talent steps forward without filters, and where expression is as important as skill. This is a space built for authenticity, courage, and real stories.\n\nEvery solo performer begins with a conversation, not a countdown. A live exchange with the judges sets the tone, revealing the thought, passion, and personality behind the act. What follows is a performance that asks for more than perfection-it asks for honesty, confidence, and presence in the moment.\n\nHere, talent is not judged only by technique, but by impact. By originality. By the way you connect, command attention, and leave something behind even after the spotlight fades.\n\nNIT's Got Latent is a journey of becoming. A place where ideas evolve into identity, where nerves turn into strength, and where expression finally finds purpose.",
+    imageUrl: latent,
+  },
+  {
+    id: '10',
     title: 'Valorant Campus Cup',
     venue: 'NIT Durgapur',
     date: new Date(2026, 0, 30, 10, 0, 0, 0),
