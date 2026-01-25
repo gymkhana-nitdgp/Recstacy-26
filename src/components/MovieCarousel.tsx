@@ -60,7 +60,7 @@ const MovieCarousel = () => {
 
     autoScrollTimer.current = window.setInterval(() => {
       rotate("next");
-    }, 6000);
+    }, 10000);
 
     return () => {
       if (autoScrollTimer.current) {
