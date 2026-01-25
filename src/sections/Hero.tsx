@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ASSETS } from "../constants";
 import AudioControl from "../components/AudioControl";
-import { DesktopLanyards, MobileSocialDock } from "../components/Socials";
+import { DesktopLanyards } from "../components/Socials";
 import Countdown from "../components/Countdown";
 
 gsap.registerPlugin(ScrollTrigger);
