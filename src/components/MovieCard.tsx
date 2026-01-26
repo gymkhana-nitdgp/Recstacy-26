@@ -52,7 +52,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
           {isActive && (
             <>
               <video
-                className="absolute inset-[5px] w-full h-full object-cover z-1 rounded-xl"
+                className="absolute inset-0 w-full h-full object-cover z-1 rounded-xl"
                 autoPlay
                 loop
                 muted
@@ -72,7 +72,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
           )}
 
           {/* LAYER 2: Character/Movie Image (Foreground) */}
-          <div className="absolute top-[35px] bottom-[26px] left-[38px] right-[27px] overflow-hidden z-10">
+          <div className="absolute top-[30px] bottom-[30px] left-[28px] right-[27px] md:left-[34px] md:right-[34px] overflow-hidden z-10">
             <img
               src={movie.imageUrl}
               alt={movie.title}

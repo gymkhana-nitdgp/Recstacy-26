@@ -10,7 +10,7 @@ const P8 = "/assets/people/person8.png";
 const promNight = "/posters/LC_Prom.png";
 const darpan = "/posters/GoonjPoster.png";
 const kalakriti = "/posters/kalakriti.jpg";
-const stellar = "/posters/Stellar.png";
+const stellar = "/posters/treasure.png";
 const interCollege = "/posters/INTER_COLLEGE.png";
 const lastLap = "/posters/LASTLAP.png";
 const valo = "/posters/valorant.jpeg";
@@ -135,11 +135,11 @@ export const DEVS: Dev[] = [
 export const TEAMMEMBERS: CardInter[] = [
   { id: 1, name: "Bikarna", role: "Chief Convener", instaId: "bikarna_21", img: P2 },
   { id: 2, name: "Debangshu", role: "Event Head", instaId: "debangshu_here_", img: P1 },
-  { id: 3, name: "Rishikesh", role: "Principal Coordinator", instaId: "", img: P4 },
-  { id: 4, name: "Shreyan", role: "CC Head", instaId: "shreyan_roy_", img: P3 },
-   { id: 5, name: "Abhra", role: "Senior Member", instaId: "abhra_00", img: P6 },
-   { id: 6, name: "Ritam", role: "Developer", instaId: "ritam_koley_10", img: P7 },
-  { id: 7, name: "Soham", role: "Executive Coordinator", instaId: "sohamchatrg", img: P5 },
+  { id: 3, name: "Shreyan", role: "CC Head", instaId: "shreyan_roy_", img: P3 },
+  { id: 4, name: "Abhra", role: "Senior Member", instaId: "abhra_00", img: P6 },
+  { id: 5, name: "Soham", role: "Chief Coordinator", instaId: "sohamchatrg", img: P5 },
+  { id: 6, name: "Rishikesh", role: "Principal Coordinator", instaId: "", img: P4 },
+  { id: 7, name: "Ritam", role: "Developer", instaId: "ritam_koley_10", img: P7 },
   { id: 8, name: "Zafar", role: "Senior Member", instaId: "zaf_ar029", img: P8 },
 ];
 
