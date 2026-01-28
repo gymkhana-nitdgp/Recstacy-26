@@ -105,7 +105,7 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
       const columnX = isLeftGroup ? -1.3 : 1.3;
       const yStart = 3.5;
       const yGap = 2.1;
-      return [columnX, yStart - i * yGap - (forceClosed ? 0.2 : 0.6), 0];
+      return [columnX, yStart - i * yGap - (forceClosed ? 0.6 : 0.6), 0];
     } else {
       const col = i % 2;
       const row = Math.floor(i / 2);
@@ -114,7 +114,7 @@ export const TheaterStage: React.FC<TheaterStageProps> = ({ forceClosed = false 
       const sideCenterX = isLeftGroup ? -2.8 : 2.8;
       const x = sideCenterX + (col === 0 ? -xSpacing / 2 : xSpacing / 2);
       const y = 0.5 - row * ySpacing; 
-      return [x, y + (forceClosed ? 0.3 : 0.6), 0];
+      return [x, y + (forceClosed ? 0.7 : 0.6), 0];
     }
   };
 

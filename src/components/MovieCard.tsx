@@ -35,14 +35,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
   const handleFlip = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!isActive) return;
-    setIsFlipped(!isFlipped);
+    setIsFlipped(prev=>!prev);
   };
 
   return (
     <div className="group perspective-1000 w-full aspect-[3/4] cursor-pointer" onClick={handleFlip}>
       {/* OPTIMIZATION 2: will-change-transform hints the browser to use a dedicated layer */}
       <div
-        className={`relative w-full h-full duration-700 transition-all preserve-3d will-change-transform ${isFlipped ? "rotate-y-180" : ""}`}
+        className={`relative w-full h-full duration-700 transition-all preserve-3d will-change-transform ${isFlipped ? "rotate-y-180" : "" }`}
       >
         {/* ================= FRONT FACE ================= */}
         {/* OPTIMIZATION 3: Removed heavy 'shadow-2xl' on mobile (added 'md:' prefix) */}
@@ -61,18 +61,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
               >
                 <source src={cardVideo} type="video/mp4" />
               </video>
-              {/* <div className="absolute inset-[5px] w-full h-full object-cover z-0 rounded-xl bg-zinc-800">
-                <img
-                  src={cardVideoPoster}
-                  alt="Preview"
-                  className="w-full h-full object-cover rounded-xl opacity-80"
-                />
-              </div> */}
             </>
           )}
 
           {/* LAYER 2: Character/Movie Image (Foreground) */}
-          <div className="absolute top-[30px] bottom-[30px] left-[28px] right-[27px] md:left-[34px] md:right-[34px] overflow-hidden z-10">
+          <div className={`absolute top-[30px] bottom-[30px] left-[28px] right-[27px] md:left-[34px] md:right-[34px] overflow-hidden z-1`}>
             <img
               src={movie.imageUrl}
               alt={movie.title}
@@ -83,14 +76,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
         </div>
 
         {/* ================= BACK FACE ================= */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl bg-zinc-900 border border-white/10 p-4 flex flex-col md:shadow-2xl">
+        <div className="absolute inset-0 w-full h-full z-2 backface-hidden rotate-y-180 rounded-2xl bg-zinc-900 border border-white/10 p-4 flex flex-col md:shadow-2xl">
           <h3 className="text-md md:text-xl font-bold text-white mb-1 tracking-wide uppercase text-center font-jmh-typewriter">
             {movie.title}
           </h3>
           <h2 className="text-xs">Venue: {movie.venue}</h2>
           {movie.endDate? <h2 className="text-xs">Date: {formatDateRange(movie.date, movie.endDate)}</h2> : <h2 className="text-sm">Date: {formatDisplayDate(movie.date)}</h2>}
           {movie.date.getHours()!==0 && <h2 className="text-xs mb-2">Time: {get12Hour(movie.date)}</h2>}
-          {movie.registerLink!==undefined  && <a href={movie.registerLink} target="_blank" onClick={(e) => e.stopPropagation()} className="text-center p-1 my-2 bg-[#ffbf00] text-black rounded-md z-[100] text-sm md:text-lg font-semibold" >Double Click to Register</a>}
+          {movie.registerLink!==undefined  && <a href={movie.registerLink} target="_blank" onClick={(e) => e.stopPropagation()} className="text-center p-1 my-2 bg-[#ffbf00] text-black rounded-md z-[100] text-sm md:text-lg font-semibold" >Register Now</a>}
 
           <p 
             className="text-[8px] md:text-xs mt-2 text-zinc-300 leading-relaxed overflow-y-auto max-h-[80%] pr-1 scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent"

@@ -17,11 +17,34 @@ const valo = "/posters/valorant.jpeg";
 const goneViral = "/posters/Gone_Viral_Quiz.jpg";
 const facePainting = "/posters/FACE_PAINTING_poster.png";
 const latent = "/posters/latent.jpeg";
+const photobooth = "/posters/Photobooth-recss.jpg";
+const zenithWalk = "/posters/zenithwalk.png";
+const stellarSnaps = "/posters/Stellar.png";
+const javedAli = "/posters/javedAli.jpeg";
+const fifa = "/posters/FIFA.jpeg";
+const bgmi = "/posters/BGMI.jpeg";
+const cactus = "/posters/CACTUS.jpeg";
 
 
 import type { Poster, Dev, CardInter } from './types';
 
 export const POSTERS: Poster[] = [
+  {
+    id: 'a1',
+    title: 'Javed Ali',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 30, 20, 0, 0, 0),
+    description: "January air that bites just a little, an open stage beneath quiet stars, the kind of night when memories return softly, unannounced, unstoppable.\n\nA voice that once sat in our earphones during moments we never confessed, heartbreaks we never explained, and bus rides we didn’t want to end. Songs that felt like prayers. Songs that felt like love letters. Songs we replayed when the world felt heavier than usual.\n\nThis Recstacy, that voice steps out of our playlists and onto our stage. Recstacy 2026 Pronites begins with our first artist reveal, Javed Ali, live on 30th January.\n\nBring your friends. Bring your feelings.\n\nBecause years from now, this is the night we’ll still carry in our hearts.",
+    imageUrl: javedAli
+  },
+  {
+    id: 'a2',
+    title: 'Cactus',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 31, 19, 0, 0, 0),
+    description: "JA stage that has heard countless echoes, now waits for a roar it knows too well.\n\nFor many of us, Cactus wasn’t discovered, it was inherited. From older siblings, from FM radios, from corridors where someone always knew the chords to \"Holud Pakhi.\" Their music lived in our city’s dust, in hostel balconies, in evenings that stretched longer than they should have.\n\nBangla rock with scars, sweat, and soul. Lyrics that felt personal even in a crowd of thousands.\n\nThis Recstacy, the legends return to remind us why we first sang out loud.",
+    imageUrl: cactus
+  },
   {
     id: '1',
     title: 'Prom Night',
@@ -108,6 +131,52 @@ export const POSTERS: Poster[] = [
     description: "Jio Games × NIT Durgapur × Recstacy '26 Gear up for high-octane competition as Recstacy 2026 brings you the Valorant Campus Cup, in collaboration with JioGames, where precision, strategy, and teamwork collide in an arena built for champions. Watch elite squads battle through intense match-ups, electrifying clutches, and tactical masterclasses in one of the most anticipated esports spectacles of the fest.",
     imageUrl: valo,
     registerLink: "https://drive.google.com/file/d/14O-leKq4EMGMi8DDiMhikl4qkGpmbNz1/view?usp=drivesdk"
+  },
+  {
+    id: '11',
+    title: 'Photobooth',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 30, 0, 0, 0, 0),
+    endDate: new Date(2026, 0, 31, 0, 0, 0, 0),
+    description: "Write-up : POSE. CLICK. REPEAT !!\n\nThe lights are bright, the props are ready, and the memories are waiting to be captured! As RECSTACY ‘26 takes over NIT Durgapur, make sure you stop by our Official Photobooth to freeze those festival feels forever.\n\nWhether it’s a goofy group shot or a solo \"main character\" moment, we’ve got the perfect backdrop for your feed.",
+    imageUrl: photobooth
+  },
+  {
+    id: '12',
+    title: 'FIFA Showdown',
+    venue: 'DM Sen Auditorium',
+    date: new Date(2026, 0, 31, 9, 0, 0, 0),
+    description: "Step into an arena where every pass carries intent and every goal shifts momentum. Inspired by legendary rivalries, high-stakes finals, and the thrill of matchday pressure, FIFA at RECSTACY 2026 transforms the campus into a digital football battleground.\n\nBuild attacks. Break defenses. Control the tempo. From group-stage clashes to knockout thrillers, players fight through intense matches where strategy, reflexes, and composure decide who advances and who watches from the sidelines.\n\nOnly the sharpest gameplay rises above the rest.\n\nLock in. Power up. Play for glory.\n\nThe pitch is set at NIT Durgapur. Let the game begin...",
+    imageUrl: fifa,
+    registerLink: "https://forms.gle/C8LoCuwWHRhXwGEZ6"
+  },
+  {
+    id: '13',
+    title: 'BGMI Tournament',
+    venue: 'NAB',
+    date: new Date(2026, 1, 1, 9, 0, 0, 0),
+    description: "Somewhere between the first countdown and the last surviving squad, silence becomes strategy. Maps unfold like living puzzles, danger hides in the open, and trust is measured in split-second decisions.BGMI at RECSTACY 2026 is where chaos learns discipline.\n\nEvery match is a story written in footsteps and gunfire. A risky push, a perfectly timed revive, a circle that refuses to be kind. Victory doesn’t come to the loudest — it comes to the squad that reads the moment better than the rest.\n\nThis is not just about staying alive.\n\nIt’s about staying calm when everything else collapses.\n\nDrop in, adapt, and outlast.\n\nThe battleground opens at NIT Durgapur.",
+    imageUrl: bgmi,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSckUssDoCC9J54uxj-2lHH7o4f0LiGWcZ1DFuH6M2ma4nFw_w/viewform"
+  },
+  {
+    id: '14',
+    title: 'Zenith Walk',
+    venue: 'Ovals Stage',
+    date: new Date(2026, 0, 30, 18, 30, 0, 0),
+    description: "There’s a hush before the lights fully rise, a heartbeat-long moment where the world feels closer and quieter at once. The ramp waits patiently, and somewhere between courage and calm, you take your first step. Zenith Walk begins not with noise, but with feeling.\n\nEvery stride carries a mood, every glance holds a promise. Confidence flows gently, elegance lingers, and the crowd doesn’t just watch it connects. This isn’t about walking perfectly; it’s about walking honestly, letting the music and the moment guide you forward.\n\nAt RECSTACY 2026, the stage opens its arms.\n\nCome as you are. Walk as you feel.\n\nZenith Walk is where your story meets the spotlight.",
+    imageUrl: zenithWalk,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSfhg2mPu6zqnwKPTiR9-HN64kZVb4T7xUBAWBDtNxbBS8SMug/viewform?usp=header"
+  },
+  {
+    id: '15',
+    title: 'Stellar Snap',
+    venue: 'Online',
+    date: new Date(2026, 0, 30, 0, 0, 0, 0),
+    endDate: new Date(2026, 1, 1, 0, 0, 0, 0),
+    description: "Moments are fleeting, but stories deserve to last. Within the chaos, colors, and emotions of Recstacy 2026 at NIT Durgapur, every second holds meaning. Through carefully captured frames and moving visuals, we preserve energy, expressions, and memories—this visual journey finds its name in Stelaar Snaps 📸\n\nFrom electrifying performances to unnoticed in-between moments, the lens follows every narrative as it unfolds. Each photograph and video reflects intention, capturing the rhythm, passion, and raw spirit that define Recstacy 2026 beyond stages, lights, and applause.\n\nMore than simple coverage, this is a pursuit of perspective and creativity. Stelaar Snaps transforms motion, light, and emotion into visual stories, ensuring that the essence of Recstacy 2026 remains alive—long after the crowd fades and the final note settles.",
+    imageUrl: stellarSnaps,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSckNtskq3KXEv7LRuGRs7cMWdq1c5Tb-acRC-SPhJyRo3V-AA/viewform"
   },
   
 ];

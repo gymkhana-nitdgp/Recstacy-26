@@ -109,7 +109,7 @@ const MovieCarousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[750px] flex items-center justify-center overflow-hidden select-none py-10">
+    <div className="relative w-full h-[950px] flex items-center justify-center overflow-hidden select-none py-10">
       {/* Side Navigation Buttons (Unchanged) */}
       <div className="absolute left-4 md:left-8 lg:left-12 z-40 top-[calc(50%-17px)] md:top-1/2 -translate-y-1/2">
         <button
