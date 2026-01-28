@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { POSTERS } from "../constants";
 import MovieCard from "./MovieCard";
 
-
 const MovieCarousel = () => {
   const [rotation, setRotation] = useState<number>(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -11,7 +10,7 @@ const MovieCarousel = () => {
   const [hasFlippedCard, setHasFlippedCard] = useState(false);
 
   // Mobile Check
-  const isMobile = window.innerWidth < 768
+  const isMobile = window.innerWidth < 768;
 
   const startX = useRef(0);
   const currentRotation = useRef(0);
@@ -109,7 +108,7 @@ const MovieCarousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[950px] flex items-center justify-center overflow-hidden select-none py-10">
+    <div className="relative w-full h-[750px] flex items-center justify-center overflow-hidden select-none mb-10">
       {/* Side Navigation Buttons (Unchanged) */}
       <div className="absolute left-4 md:left-8 lg:left-12 z-40 top-[calc(50%-17px)] md:top-1/2 -translate-y-1/2">
         <button
@@ -152,7 +151,7 @@ const MovieCarousel = () => {
 
       {/* 3D Scene Container */}
       <div
-        className="relative w-[240px] sm:w-[300px] h-[445px] perspective-2000 -ml-[1px] -translate-y-[5px]"
+        className="relative w-[240px] sm:w-[300px] h-[445px] mt-20 perspective-2000 -ml-[1px] -translate-y-[5px]"
         onMouseDown={handleTouchStart}
         onMouseMove={handleTouchMove}
         onMouseUp={handleTouchEnd}
@@ -176,7 +175,7 @@ const MovieCarousel = () => {
             // OPTIMIZATION 1: Simplified styles for mobile
             // Mobile: Opacity Only. Desktop: Brightness + Grayscale + Opacity.
             const activeStyle = isActive
-              ? "scale-110 opacity-100 brightness-110 z-10"
+              ? "scale-100 opacity-100 brightness-110 z-10"
               : isMobile
                 ? "scale-90 opacity-40 z-0" // Cheap style for mobile
                 : "scale-90 opacity-40 brightness-50 grayscale-[0.6] z-0"; // Expensive style for desktop

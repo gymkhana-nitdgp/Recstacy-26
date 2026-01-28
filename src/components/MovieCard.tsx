@@ -39,10 +39,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
   };
 
   return (
-    <div className="group perspective-1000 w-full aspect-[3/4] cursor-pointer" onClick={handleFlip}>
+    <div className="group perspective-1000 w-full aspect-[3/4] flex items-center justify-center  cursor-pointer" onClick={handleFlip}>
       {/* OPTIMIZATION 2: will-change-transform hints the browser to use a dedicated layer */}
       <div
-        className={`relative w-full h-full duration-700 transition-all preserve-3d will-change-transform ${isFlipped ? "rotate-y-180" : "" }`}
+        className={`relative w-[90%] my-10 h-full md:h-[90%] duration-700 transition-all preserve-3d will-change-transform ${isFlipped ? "rotate-y-180" : "" }`}
       >
         {/* ================= FRONT FACE ================= */}
         {/* OPTIMIZATION 3: Removed heavy 'shadow-2xl' on mobile (added 'md:' prefix) */}
