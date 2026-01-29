@@ -1,5 +1,5 @@
 const P1 = "/assets/people/person1.png";
-const P2 = "/assets/people/person2.png";
+const P2 = "/assets/people/person2.jpeg";
 const P3 = "/assets/people/person3.png";
 const P4 = "/assets/people/person4.png";
 const P5 = "/assets/people/person5.png";
@@ -27,6 +27,8 @@ const cactus = "/posters/CACTUS.jpeg";
 const irfan = "/posters/irfan.jpeg";
 const beyond = "/posters/BeyondTheSwipe.jpeg";
 const bolly = "/posters/BollywoodDay.webp";
+const tugOfWar = "/posters/tugOfWar.jpeg";
+const dart = "/posters/dart.jpeg";
 
 
 
@@ -209,6 +211,24 @@ export const POSTERS: Poster[] = [
     description: "\"Cinema is not just an source of entertainment it's an emotion that connects us all \".\n\nStep into a world where stories come alive and music sets the rhythm. Radio NITroz the Official Entertainment Club of NIT Durgapur, invites you to experience The Bollywood Day, a vibrant part of Recstacy 2026.",
     imageUrl: bolly,
     registerLink: "https://forms.gle/EXs4E6uiGoWyyQfi9"
+  },
+  {
+    id: '18',
+    title: 'Tug of War',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 0, 31, 14, 30, 0, 0),
+    description: "Alone we are strong, but together we are unstoppable!!\n\nGet ready for the ultimate test of teamwork and strength! *Tug of War* brought by Radio NITroz this Recstacy 2026 is not just a game of strength, it is a true test of teamwork, balance, and determination. Every pull reflects unity, every step shows strategy, and every victory proves the power of togetherness.",
+    imageUrl: tugOfWar,
+    registerLink: "https://forms.gle/85sBYDChMj9f5GhK9"
+  },
+  {
+    id: '19',
+    title: 'Dart',
+    venue: 'NAB Ground Floor',
+    date: new Date(2026, 1, 1, 14, 30, 0, 0),
+    description: "\"Every throw tells a story, every hit sparks the thrill.\" 🎯\n\nStep into an arena where focus meets fun and precision becomes the ultimate challenge. Radio NITroz, the Official Entertainment Club of NIT Durgapur, invites you to test your aim at “The Game Of Dart”,an adrenaline-filled highlight of Recstacy 2026.",
+    imageUrl: dart,
+    registerLink: "https://forms.gle/u6VAGxU8hZDfYzzVA"
   },
   
 ];
