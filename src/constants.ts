@@ -24,6 +24,10 @@ const javedAli = "/posters/javedAli.jpeg";
 const fifa = "/posters/FIFA.jpeg";
 const bgmi = "/posters/BGMI.jpeg";
 const cactus = "/posters/CACTUS.jpeg";
+const irfan = "/posters/irfan.jpeg";
+const beyond = "/posters/BeyondTheSwipe.jpeg";
+const bolly = "/posters/BollywoodDay.webp";
+
 
 
 import type { Poster, Dev, CardInter } from './types';
@@ -44,6 +48,14 @@ export const POSTERS: Poster[] = [
     date: new Date(2026, 0, 31, 19, 0, 0, 0),
     description: "JA stage that has heard countless echoes, now waits for a roar it knows too well.\n\nFor many of us, Cactus wasn’t discovered, it was inherited. From older siblings, from FM radios, from corridors where someone always knew the chords to \"Holud Pakhi.\" Their music lived in our city’s dust, in hostel balconies, in evenings that stretched longer than they should have.\n\nBangla rock with scars, sweat, and soul. Lyrics that felt personal even in a crowd of thousands.\n\nThis Recstacy, the legends return to remind us why we first sang out loud.",
     imageUrl: cactus
+  },
+  {
+    id: 'a3',
+    title: 'Md. Irfan',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 1, 1, 20, 0, 0, 0),
+    description: "There was a time when Phir Mohabbat played on loop and we didn’t admit why. When Banjaara felt less like a song and more like a confession we weren’t brave enough to make. Mohammed Irfan’s voice has always carried that quiet intensity, the kind that understands longing without needing to raise its volume.\n\nHis songs found us in borrowed earphones, in bus rides home, in nights when the campus lights felt softer than usual. They stayed through crushes, heartbreaks, almost-love stories and the spaces we never quite named.\n\nThis Recstacy, that voice steps into our story in real time.",
+    imageUrl: irfan
   },
   {
     id: '1',
@@ -78,6 +90,7 @@ export const POSTERS: Poster[] = [
     date: new Date(2026, 0, 30, 0, 0, 0, 0),
     description: "Step into a universe where every clue is a prophecy and every checkpoint is a new realm. Inspired by cosmic odysseys, space epics, and survival games, Stellar Scavengers is a high-speed campus-wide treasure hunt where wit, teamwork, and instinct decide your fate.\n\n Decode riddles. Navigate hidden stations. Beat the clock. Race through 9 celestial checkpoints to reach the final trial of 12 intense task zones.\n\nOnly the fastest minds survive the cosmos.\n\nSuit up scavengers. The galaxy is yours.",
     imageUrl: stellar,
+    registerLink: "https://forms.gle/Z1qDJ7JVxrjeYGcN8"
   },
   {
     id: '5',
@@ -121,6 +134,7 @@ export const POSTERS: Poster[] = [
     date: new Date(2026, 0, 31, 0, 0, 0, 0),
     description: "Students' Gymkhana Presents NIT's Got Latent\n\nNIT's Got Latent is not just a stage-it's a feeling. It's where instinct meets intention, where raw talent steps forward without filters, and where expression is as important as skill. This is a space built for authenticity, courage, and real stories.\n\nEvery solo performer begins with a conversation, not a countdown. A live exchange with the judges sets the tone, revealing the thought, passion, and personality behind the act. What follows is a performance that asks for more than perfection-it asks for honesty, confidence, and presence in the moment.\n\nHere, talent is not judged only by technique, but by impact. By originality. By the way you connect, command attention, and leave something behind even after the spotlight fades.\n\nNIT's Got Latent is a journey of becoming. A place where ideas evolve into identity, where nerves turn into strength, and where expression finally finds purpose.",
     imageUrl: latent,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSePdNdQfqACMcsERgF-ab4_0ljTg6hftm6SXB0HaPxlhsa3xg/viewform"
   },
   {
     id: '10',
@@ -177,6 +191,24 @@ export const POSTERS: Poster[] = [
     description: "Moments are fleeting, but stories deserve to last. Within the chaos, colors, and emotions of Recstacy 2026 at NIT Durgapur, every second holds meaning. Through carefully captured frames and moving visuals, we preserve energy, expressions, and memories—this visual journey finds its name in Stelaar Snaps 📸\n\nFrom electrifying performances to unnoticed in-between moments, the lens follows every narrative as it unfolds. Each photograph and video reflects intention, capturing the rhythm, passion, and raw spirit that define Recstacy 2026 beyond stages, lights, and applause.\n\nMore than simple coverage, this is a pursuit of perspective and creativity. Stelaar Snaps transforms motion, light, and emotion into visual stories, ensuring that the essence of Recstacy 2026 remains alive—long after the crowd fades and the final note settles.",
     imageUrl: stellarSnaps,
     registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSckNtskq3KXEv7LRuGRs7cMWdq1c5Tb-acRC-SPhJyRo3V-AA/viewform"
+  },
+  {
+    id: '16',
+    title: 'Beyond the Swipe',
+    venue: 'Mini Ovals',
+    date: new Date(2026, 1, 1, 0, 0, 0, 0),
+    description: "In a world where connection begins by looking at a phone screen, Beyond the Swipe asks what happens when it grows into shared warmth, quiet closeness, and the courage to truly understand another person. As emotions become temporary and intimacy feels replaceable, this experience invites a pause to slow down and feel.\n\nThis is not about romance. It is about the act of connecting without distraction. About staying when nothing is demanding your attention, when there is no audience, no validation, no escape. It is about noticing tone, pauses, breath about understanding that real connection is built through attention, patience, and presence.",
+    imageUrl: beyond,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSe9Rf1RkNn3YmMoIDpW7fqpGnSdgKrgBt88kpbKnBCyOnT_Vg/viewform"
+  },
+  {
+    id: '17',
+    title: 'Bollywood Day',
+    venue: 'New Auditorium',
+    date: new Date(2026, 0, 30, 14, 0, 0, 0),
+    description: "\"Cinema is not just an source of entertainment it's an emotion that connects us all \".\n\nStep into a world where stories come alive and music sets the rhythm. Radio NITroz the Official Entertainment Club of NIT Durgapur, invites you to experience The Bollywood Day, a vibrant part of Recstacy 2026.",
+    imageUrl: bolly,
+    registerLink: "https://forms.gle/EXs4E6uiGoWyyQfi9"
   },
   
 ];
