@@ -218,18 +218,18 @@ const SponsorsPage: React.FC = () => {
                     <MobileLogo key={i} src={s.src} />
                   ))}
                 </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {MOBILE_ORDER.slice(14, 18).map((s, i) => (
+                <div className="grid grid-cols-5 gap-2">
+                  {MOBILE_ORDER.slice(14, 19).map((s, i) => (
+                    <MobileLogo key={i} src={s.src} />
+                  ))}
+                </div>
+                <div className="grid grid-cols-5 gap-2">
+                  {MOBILE_ORDER.slice(19, 24).map((s, i) => (
                     <MobileLogo key={i} src={s.src} />
                   ))}
                 </div>
                 <div className="grid grid-cols-4 gap-2">
-                  {MOBILE_ORDER.slice(18, 22).map((s, i) => (
-                    <MobileLogo key={i} src={s.src} />
-                  ))}
-                </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {MOBILE_ORDER.slice(22, 26).map((s, i) => (
+                  {MOBILE_ORDER.slice(24, 28).map((s, i) => (
                     <MobileLogo key={i} src={s.src} />
                   ))}
                 </div>

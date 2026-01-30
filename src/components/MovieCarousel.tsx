@@ -23,7 +23,7 @@ const MovieCarousel = () => {
 
   const updateRadius = useCallback(() => {
     const width = window.innerWidth;
-    const cardWidth = width < 640 ? 240 : 300;
+    const cardWidth = width < 640 ? 200 : 235;
     const calculatedRadius = Math.max(300, cardWidth / 2 / Math.tan(Math.PI / count) + 50);
     setRadius(calculatedRadius);
   }, [count]);
@@ -108,7 +108,7 @@ const MovieCarousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[750px] flex items-center justify-center overflow-hidden select-none mb-10">
+    <div className="relative w-full h-[700px] md:h-[800px] flex items-center justify-center overflow-hidden select-none mb-10">
       {/* Side Navigation Buttons (Unchanged) */}
       <div className="absolute left-4 md:left-8 lg:left-12 z-40 top-[calc(50%-17px)] md:top-1/2 -translate-y-1/2">
         <button
@@ -151,7 +151,7 @@ const MovieCarousel = () => {
 
       {/* 3D Scene Container */}
       <div
-        className="relative w-[240px] sm:w-[300px] h-[445px] mt-20 perspective-2000 -ml-[1px] -translate-y-[5px]"
+        className="relative w-[240px] sm:w-[300px] h-[500px] mt-20 perspective-2000 -ml-[1px] -translate-y-[5px]"
         onMouseDown={handleTouchStart}
         onMouseMove={handleTouchMove}
         onMouseUp={handleTouchEnd}

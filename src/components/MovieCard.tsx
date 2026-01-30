@@ -52,7 +52,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isActive, onFlipBack, onFl
           {isActive && (
             <>
               <video
-                className="absolute inset-0 w-full h-full object-cover z-1 rounded-xl"
+                className="absolute inset-0 w-full h-full object-cover rounded-xl"
                 autoPlay
                 loop
                 muted

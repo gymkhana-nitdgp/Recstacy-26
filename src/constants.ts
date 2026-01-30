@@ -29,6 +29,9 @@ const beyond = "/posters/BeyondTheSwipe.jpeg";
 const bolly = "/posters/BollywoodDay.webp";
 const tugOfWar = "/posters/tugOfWar.jpeg";
 const dart = "/posters/dart.jpeg";
+const carnivore = "/posters/carnivore.jpeg";
+const nakabposh = "/posters/nakabposh.jpeg";
+const astral = "/posters/astral.jpeg";
 
 
 
@@ -58,6 +61,14 @@ export const POSTERS: Poster[] = [
     date: new Date(2026, 1, 1, 20, 0, 0, 0),
     description: "There was a time when Phir Mohabbat played on loop and we didn’t admit why. When Banjaara felt less like a song and more like a confession we weren’t brave enough to make. Mohammed Irfan’s voice has always carried that quiet intensity, the kind that understands longing without needing to raise its volume.\n\nHis songs found us in borrowed earphones, in bus rides home, in nights when the campus lights felt softer than usual. They stayed through crushes, heartbreaks, almost-love stories and the spaces we never quite named.\n\nThis Recstacy, that voice steps into our story in real time.",
     imageUrl: irfan
+  },
+  {
+    id: 'a4',
+    title: 'DJ Carnivore',
+    venue: 'Ovals Ground',
+    date: new Date(2026, 1, 1, 21, 0, 0, 0),
+    description: "When chaos exhales and the night learns how to glow, the journey finds its meaning. As we move into the third day of Recstasy 2026, it is time for release. Ladies and gentlemen,  the Student's Gymkhana presents you DJ Carnivore. With every drop, he pulls the room into rhythm and refuses to let go. The time has come for the unrest to soften, for noise to find meaning.\n\nAs DJ Carnivore guides the night, dark rhythms bloom into something luminous: a hypnotic ascent where the crowd drifts, not falls, carried by sound toward stillness wrapped in ecstasy.\n\nThe last night.\n\nNo endings, only awakening.\n\nOnly a shared dream that feels infinite.\n\nFrom Nebula to Nirvana—arrive, together.",
+    imageUrl: carnivore
   },
   {
     id: '1',
@@ -229,6 +240,24 @@ export const POSTERS: Poster[] = [
     description: "\"Every throw tells a story, every hit sparks the thrill.\" 🎯\n\nStep into an arena where focus meets fun and precision becomes the ultimate challenge. Radio NITroz, the Official Entertainment Club of NIT Durgapur, invites you to test your aim at “The Game Of Dart”,an adrenaline-filled highlight of Recstacy 2026.",
     imageUrl: dart,
     registerLink: "https://forms.gle/u6VAGxU8hZDfYzzVA"
+  },
+  {
+    id: '20',
+    title: 'Nakabposh',
+    venue: 'New Auditorium',
+    date: new Date(2026, 0, 30, 10, 0, 0, 0),
+    description: "One performer. Many lives. No escape.📽️🎭\n\nThis year, the stage becomes a confined universe—where a single performer carries countless identities, emotions, and conflicts. Each act unfolds like a lived reality, shifting between dreams and despair, hope and consequence, leaving no room to hide and no truth untouched.\n\nBringing this vision to life, Enteract — The Official Dramatics Club of NIT Durgapur presents NAKABPOSH, the monoact competition at Recstacy’26.\n\nWitness one performer embody many lives, blurring the fragile line between truth and illusion, and delivering stories so raw they echo long after the curtain falls.",
+    imageUrl: nakabposh,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSfZWNygLzMGA0rvBjRyGm6N4AqL-wWb-db-00B5fHBmx5XGUg/viewform?usp=publish-editor"
+  },
+  {
+    id: '21',
+    title: 'Astral Auction',
+    venue: 'DM Sen Auditorium',
+    date: new Date(2026, 0, 31, 15, 0, 0, 0),
+    description: "Astral Auction is a highstakes, immersive auction based strategy event where sharp decision making meets calculated planning. Participants compete in a dynamic environment that demands quick thinking, smart bidding, and effective resource management under pressure.\n\nBlending teamwork with foresight, the event challenges teams to adapt to changing situations, anticipate opponents, and make strategic choices in real time. Every bid matters, and only those who balance speed with strategy will emerge ahead.",
+    imageUrl: astral,
+    registerLink: "https://docs.google.com/forms/d/e/1FAIpQLSebV0bOpGSS3KRmN4vxkkYOCBUPGgoWiRwXuaskX1SVWWKRlg/viewform"
   },
   
 ];
